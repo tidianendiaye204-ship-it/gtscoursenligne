@@ -58,13 +58,13 @@ export default async function MatierePage({
         Séries de {matiere.nom.toLowerCase()}
       </h1>
 
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="flex overflow-x-auto whitespace-nowrap gap-2 mb-10 pb-2 -mx-6 px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <Link
           href={`/series/${niveau.slug}/${matiere.slug}`}
-          className={`font-body text-sm px-4 py-2 rounded-sm border transition-colors ${
+          className={`font-body text-sm px-5 py-2.5 rounded-full border transition-colors ${
             !categorieActive
-              ? "bg-encre text-craie border-encre"
-              : "border-encre/20 text-ardoise hover:border-azur"
+              ? "bg-azur text-white border-azur shadow-sm"
+              : "border-ardoise/20 text-ardoise hover:border-azur hover:text-azur bg-white/50"
           }`}
         >
           Tout
@@ -75,10 +75,10 @@ export default async function MatierePage({
           <Link
             key={c.slug}
             href={`/series/${niveau.slug}/${matiere.slug}?categorie=${c.slug}`}
-            className={`font-body text-sm px-4 py-2 rounded-sm border transition-colors ${
+            className={`font-body text-sm px-5 py-2.5 rounded-full border transition-colors ${
               categorieActive === c.slug
-                ? "bg-encre text-craie border-encre"
-                : "border-encre/20 text-ardoise hover:border-azur"
+                ? "bg-azur text-white border-azur shadow-sm"
+                : "border-ardoise/20 text-ardoise hover:border-azur hover:text-azur bg-white/50"
             }`}
           >
             {c.nomCourt}
