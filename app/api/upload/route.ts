@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
     
     // Upload to R2
     await env.FICHIERS.put(path, arrayBuffer, {
-      httpMetadata: { contentType: file.type },
+      httpMetadata: { 
+        contentType: file.type,
+        contentDisposition: "inline"
+      },
     });
 
     // L'URL de base est définie par la variable d'environnement NEXT_PUBLIC_R2_URL

@@ -1424,893 +1424,7 @@ var require_middleware = __commonJS({
     }, 521: (a) => {
       "use strict";
       a.exports = (init_node_async_hooks(), __toCommonJS(node_async_hooks_exports));
-    }, 663: (a) => {
-      (() => {
-        "use strict";
-        "undefined" != typeof __nccwpck_require__ && (__nccwpck_require__.ab = "//");
-        var b = {};
-        (() => {
-          b.parse = function(b2, c2) {
-            if ("string" != typeof b2) throw TypeError("argument str must be a string");
-            for (var e2 = {}, f = b2.split(d), g = (c2 || {}).decode || a2, h = 0; h < f.length; h++) {
-              var i = f[h], j = i.indexOf("=");
-              if (!(j < 0)) {
-                var k = i.substr(0, j).trim(), l = i.substr(++j, i.length).trim();
-                '"' == l[0] && (l = l.slice(1, -1)), void 0 == e2[k] && (e2[k] = function(a3, b3) {
-                  try {
-                    return b3(a3);
-                  } catch (b4) {
-                    return a3;
-                  }
-                }(l, g));
-              }
-            }
-            return e2;
-          }, b.serialize = function(a3, b2, d2) {
-            var f = d2 || {}, g = f.encode || c;
-            if ("function" != typeof g) throw TypeError("option encode is invalid");
-            if (!e.test(a3)) throw TypeError("argument name is invalid");
-            var h = g(b2);
-            if (h && !e.test(h)) throw TypeError("argument val is invalid");
-            var i = a3 + "=" + h;
-            if (null != f.maxAge) {
-              var j = f.maxAge - 0;
-              if (isNaN(j) || !isFinite(j)) throw TypeError("option maxAge is invalid");
-              i += "; Max-Age=" + Math.floor(j);
-            }
-            if (f.domain) {
-              if (!e.test(f.domain)) throw TypeError("option domain is invalid");
-              i += "; Domain=" + f.domain;
-            }
-            if (f.path) {
-              if (!e.test(f.path)) throw TypeError("option path is invalid");
-              i += "; Path=" + f.path;
-            }
-            if (f.expires) {
-              if ("function" != typeof f.expires.toUTCString) throw TypeError("option expires is invalid");
-              i += "; Expires=" + f.expires.toUTCString();
-            }
-            if (f.httpOnly && (i += "; HttpOnly"), f.secure && (i += "; Secure"), f.sameSite) switch ("string" == typeof f.sameSite ? f.sameSite.toLowerCase() : f.sameSite) {
-              case true:
-              case "strict":
-                i += "; SameSite=Strict";
-                break;
-              case "lax":
-                i += "; SameSite=Lax";
-                break;
-              case "none":
-                i += "; SameSite=None";
-                break;
-              default:
-                throw TypeError("option sameSite is invalid");
-            }
-            return i;
-          };
-          var a2 = decodeURIComponent, c = encodeURIComponent, d = /; */, e = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
-        })(), a.exports = b;
-      })();
-    }, 720: (a, b, c) => {
-      "use strict";
-      Object.defineProperty(b, "__esModule", { value: true }), !function(a2, b2) {
-        for (var c2 in b2) Object.defineProperty(a2, c2, { enumerable: true, get: b2[c2] });
-      }(b, { interceptTestApis: function() {
-        return f;
-      }, wrapRequestHandler: function() {
-        return g;
-      } });
-      let d = c(392), e = c(165);
-      function f() {
-        return (0, e.interceptFetch)(c.g.fetch);
-      }
-      function g(a2) {
-        return (b2, c2) => (0, d.withRequest)(b2, e.reader, () => a2(b2, c2));
-      }
-    }, 814: (a, b, c) => {
-      "use strict";
-      a.exports = c(440);
-    }, 817: (a, b, c) => {
-      (() => {
-        "use strict";
-        var b2 = { 491: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.ContextAPI = void 0;
-          let d2 = c2(223), e2 = c2(172), f2 = c2(930), g = "context", h = new d2.NoopContextManager();
-          class i {
-            constructor() {
-            }
-            static getInstance() {
-              return this._instance || (this._instance = new i()), this._instance;
-            }
-            setGlobalContextManager(a3) {
-              return (0, e2.registerGlobal)(g, a3, f2.DiagAPI.instance());
-            }
-            active() {
-              return this._getContextManager().active();
-            }
-            with(a3, b4, c3, ...d3) {
-              return this._getContextManager().with(a3, b4, c3, ...d3);
-            }
-            bind(a3, b4) {
-              return this._getContextManager().bind(a3, b4);
-            }
-            _getContextManager() {
-              return (0, e2.getGlobal)(g) || h;
-            }
-            disable() {
-              this._getContextManager().disable(), (0, e2.unregisterGlobal)(g, f2.DiagAPI.instance());
-            }
-          }
-          b3.ContextAPI = i;
-        }, 930: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagAPI = void 0;
-          let d2 = c2(56), e2 = c2(912), f2 = c2(957), g = c2(172);
-          class h {
-            constructor() {
-              function a3(a4) {
-                return function(...b5) {
-                  let c3 = (0, g.getGlobal)("diag");
-                  if (c3) return c3[a4](...b5);
-                };
-              }
-              let b4 = this;
-              b4.setLogger = (a4, c3 = { logLevel: f2.DiagLogLevel.INFO }) => {
-                var d3, h2, i;
-                if (a4 === b4) {
-                  let a5 = Error("Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation");
-                  return b4.error(null != (d3 = a5.stack) ? d3 : a5.message), false;
-                }
-                "number" == typeof c3 && (c3 = { logLevel: c3 });
-                let j = (0, g.getGlobal)("diag"), k = (0, e2.createLogLevelDiagLogger)(null != (h2 = c3.logLevel) ? h2 : f2.DiagLogLevel.INFO, a4);
-                if (j && !c3.suppressOverrideMessage) {
-                  let a5 = null != (i = Error().stack) ? i : "<failed to generate stacktrace>";
-                  j.warn(`Current logger will be overwritten from ${a5}`), k.warn(`Current logger will overwrite one already registered from ${a5}`);
-                }
-                return (0, g.registerGlobal)("diag", k, b4, true);
-              }, b4.disable = () => {
-                (0, g.unregisterGlobal)("diag", b4);
-              }, b4.createComponentLogger = (a4) => new d2.DiagComponentLogger(a4), b4.verbose = a3("verbose"), b4.debug = a3("debug"), b4.info = a3("info"), b4.warn = a3("warn"), b4.error = a3("error");
-            }
-            static instance() {
-              return this._instance || (this._instance = new h()), this._instance;
-            }
-          }
-          b3.DiagAPI = h;
-        }, 653: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.MetricsAPI = void 0;
-          let d2 = c2(660), e2 = c2(172), f2 = c2(930), g = "metrics";
-          class h {
-            constructor() {
-            }
-            static getInstance() {
-              return this._instance || (this._instance = new h()), this._instance;
-            }
-            setGlobalMeterProvider(a3) {
-              return (0, e2.registerGlobal)(g, a3, f2.DiagAPI.instance());
-            }
-            getMeterProvider() {
-              return (0, e2.getGlobal)(g) || d2.NOOP_METER_PROVIDER;
-            }
-            getMeter(a3, b4, c3) {
-              return this.getMeterProvider().getMeter(a3, b4, c3);
-            }
-            disable() {
-              (0, e2.unregisterGlobal)(g, f2.DiagAPI.instance());
-            }
-          }
-          b3.MetricsAPI = h;
-        }, 181: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.PropagationAPI = void 0;
-          let d2 = c2(172), e2 = c2(874), f2 = c2(194), g = c2(277), h = c2(369), i = c2(930), j = "propagation", k = new e2.NoopTextMapPropagator();
-          class l {
-            constructor() {
-              this.createBaggage = h.createBaggage, this.getBaggage = g.getBaggage, this.getActiveBaggage = g.getActiveBaggage, this.setBaggage = g.setBaggage, this.deleteBaggage = g.deleteBaggage;
-            }
-            static getInstance() {
-              return this._instance || (this._instance = new l()), this._instance;
-            }
-            setGlobalPropagator(a3) {
-              return (0, d2.registerGlobal)(j, a3, i.DiagAPI.instance());
-            }
-            inject(a3, b4, c3 = f2.defaultTextMapSetter) {
-              return this._getGlobalPropagator().inject(a3, b4, c3);
-            }
-            extract(a3, b4, c3 = f2.defaultTextMapGetter) {
-              return this._getGlobalPropagator().extract(a3, b4, c3);
-            }
-            fields() {
-              return this._getGlobalPropagator().fields();
-            }
-            disable() {
-              (0, d2.unregisterGlobal)(j, i.DiagAPI.instance());
-            }
-            _getGlobalPropagator() {
-              return (0, d2.getGlobal)(j) || k;
-            }
-          }
-          b3.PropagationAPI = l;
-        }, 997: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceAPI = void 0;
-          let d2 = c2(172), e2 = c2(846), f2 = c2(139), g = c2(607), h = c2(930), i = "trace";
-          class j {
-            constructor() {
-              this._proxyTracerProvider = new e2.ProxyTracerProvider(), this.wrapSpanContext = f2.wrapSpanContext, this.isSpanContextValid = f2.isSpanContextValid, this.deleteSpan = g.deleteSpan, this.getSpan = g.getSpan, this.getActiveSpan = g.getActiveSpan, this.getSpanContext = g.getSpanContext, this.setSpan = g.setSpan, this.setSpanContext = g.setSpanContext;
-            }
-            static getInstance() {
-              return this._instance || (this._instance = new j()), this._instance;
-            }
-            setGlobalTracerProvider(a3) {
-              let b4 = (0, d2.registerGlobal)(i, this._proxyTracerProvider, h.DiagAPI.instance());
-              return b4 && this._proxyTracerProvider.setDelegate(a3), b4;
-            }
-            getTracerProvider() {
-              return (0, d2.getGlobal)(i) || this._proxyTracerProvider;
-            }
-            getTracer(a3, b4) {
-              return this.getTracerProvider().getTracer(a3, b4);
-            }
-            disable() {
-              (0, d2.unregisterGlobal)(i, h.DiagAPI.instance()), this._proxyTracerProvider = new e2.ProxyTracerProvider();
-            }
-          }
-          b3.TraceAPI = j;
-        }, 277: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.deleteBaggage = b3.setBaggage = b3.getActiveBaggage = b3.getBaggage = void 0;
-          let d2 = c2(491), e2 = (0, c2(780).createContextKey)("OpenTelemetry Baggage Key");
-          function f2(a3) {
-            return a3.getValue(e2) || void 0;
-          }
-          b3.getBaggage = f2, b3.getActiveBaggage = function() {
-            return f2(d2.ContextAPI.getInstance().active());
-          }, b3.setBaggage = function(a3, b4) {
-            return a3.setValue(e2, b4);
-          }, b3.deleteBaggage = function(a3) {
-            return a3.deleteValue(e2);
-          };
-        }, 993: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.BaggageImpl = void 0;
-          class c2 {
-            constructor(a3) {
-              this._entries = a3 ? new Map(a3) : /* @__PURE__ */ new Map();
-            }
-            getEntry(a3) {
-              let b4 = this._entries.get(a3);
-              if (b4) return Object.assign({}, b4);
-            }
-            getAllEntries() {
-              return Array.from(this._entries.entries()).map(([a3, b4]) => [a3, b4]);
-            }
-            setEntry(a3, b4) {
-              let d2 = new c2(this._entries);
-              return d2._entries.set(a3, b4), d2;
-            }
-            removeEntry(a3) {
-              let b4 = new c2(this._entries);
-              return b4._entries.delete(a3), b4;
-            }
-            removeEntries(...a3) {
-              let b4 = new c2(this._entries);
-              for (let c3 of a3) b4._entries.delete(c3);
-              return b4;
-            }
-            clear() {
-              return new c2();
-            }
-          }
-          b3.BaggageImpl = c2;
-        }, 830: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.baggageEntryMetadataSymbol = void 0, b3.baggageEntryMetadataSymbol = Symbol("BaggageEntryMetadata");
-        }, 369: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.baggageEntryMetadataFromString = b3.createBaggage = void 0;
-          let d2 = c2(930), e2 = c2(993), f2 = c2(830), g = d2.DiagAPI.instance();
-          b3.createBaggage = function(a3 = {}) {
-            return new e2.BaggageImpl(new Map(Object.entries(a3)));
-          }, b3.baggageEntryMetadataFromString = function(a3) {
-            return "string" != typeof a3 && (g.error(`Cannot create baggage metadata from unknown type: ${typeof a3}`), a3 = ""), { __TYPE__: f2.baggageEntryMetadataSymbol, toString: () => a3 };
-          };
-        }, 67: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.context = void 0, b3.context = c2(491).ContextAPI.getInstance();
-        }, 223: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopContextManager = void 0;
-          let d2 = c2(780);
-          class e2 {
-            active() {
-              return d2.ROOT_CONTEXT;
-            }
-            with(a3, b4, c3, ...d3) {
-              return b4.call(c3, ...d3);
-            }
-            bind(a3, b4) {
-              return b4;
-            }
-            enable() {
-              return this;
-            }
-            disable() {
-              return this;
-            }
-          }
-          b3.NoopContextManager = e2;
-        }, 780: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.ROOT_CONTEXT = b3.createContextKey = void 0, b3.createContextKey = function(a3) {
-            return Symbol.for(a3);
-          };
-          class c2 {
-            constructor(a3) {
-              let b4 = this;
-              b4._currentContext = a3 ? new Map(a3) : /* @__PURE__ */ new Map(), b4.getValue = (a4) => b4._currentContext.get(a4), b4.setValue = (a4, d2) => {
-                let e2 = new c2(b4._currentContext);
-                return e2._currentContext.set(a4, d2), e2;
-              }, b4.deleteValue = (a4) => {
-                let d2 = new c2(b4._currentContext);
-                return d2._currentContext.delete(a4), d2;
-              };
-            }
-          }
-          b3.ROOT_CONTEXT = new c2();
-        }, 506: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.diag = void 0, b3.diag = c2(930).DiagAPI.instance();
-        }, 56: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagComponentLogger = void 0;
-          let d2 = c2(172);
-          class e2 {
-            constructor(a3) {
-              this._namespace = a3.namespace || "DiagComponentLogger";
-            }
-            debug(...a3) {
-              return f2("debug", this._namespace, a3);
-            }
-            error(...a3) {
-              return f2("error", this._namespace, a3);
-            }
-            info(...a3) {
-              return f2("info", this._namespace, a3);
-            }
-            warn(...a3) {
-              return f2("warn", this._namespace, a3);
-            }
-            verbose(...a3) {
-              return f2("verbose", this._namespace, a3);
-            }
-          }
-          function f2(a3, b4, c3) {
-            let e3 = (0, d2.getGlobal)("diag");
-            if (e3) return c3.unshift(b4), e3[a3](...c3);
-          }
-          b3.DiagComponentLogger = e2;
-        }, 972: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagConsoleLogger = void 0;
-          let c2 = [{ n: "error", c: "error" }, { n: "warn", c: "warn" }, { n: "info", c: "info" }, { n: "debug", c: "debug" }, { n: "verbose", c: "trace" }];
-          class d2 {
-            constructor() {
-              for (let a3 = 0; a3 < c2.length; a3++) this[c2[a3].n] = /* @__PURE__ */ function(a4) {
-                return function(...b4) {
-                  if (console) {
-                    let c3 = console[a4];
-                    if ("function" != typeof c3 && (c3 = console.log), "function" == typeof c3) return c3.apply(console, b4);
-                  }
-                };
-              }(c2[a3].c);
-            }
-          }
-          b3.DiagConsoleLogger = d2;
-        }, 912: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.createLogLevelDiagLogger = void 0;
-          let d2 = c2(957);
-          b3.createLogLevelDiagLogger = function(a3, b4) {
-            function c3(c4, d3) {
-              let e2 = b4[c4];
-              return "function" == typeof e2 && a3 >= d3 ? e2.bind(b4) : function() {
-              };
-            }
-            return a3 < d2.DiagLogLevel.NONE ? a3 = d2.DiagLogLevel.NONE : a3 > d2.DiagLogLevel.ALL && (a3 = d2.DiagLogLevel.ALL), b4 = b4 || {}, { error: c3("error", d2.DiagLogLevel.ERROR), warn: c3("warn", d2.DiagLogLevel.WARN), info: c3("info", d2.DiagLogLevel.INFO), debug: c3("debug", d2.DiagLogLevel.DEBUG), verbose: c3("verbose", d2.DiagLogLevel.VERBOSE) };
-          };
-        }, 957: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagLogLevel = void 0, function(a3) {
-            a3[a3.NONE = 0] = "NONE", a3[a3.ERROR = 30] = "ERROR", a3[a3.WARN = 50] = "WARN", a3[a3.INFO = 60] = "INFO", a3[a3.DEBUG = 70] = "DEBUG", a3[a3.VERBOSE = 80] = "VERBOSE", a3[a3.ALL = 9999] = "ALL";
-          }(b3.DiagLogLevel || (b3.DiagLogLevel = {}));
-        }, 172: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.unregisterGlobal = b3.getGlobal = b3.registerGlobal = void 0;
-          let d2 = c2(200), e2 = c2(521), f2 = c2(130), g = e2.VERSION.split(".")[0], h = Symbol.for(`opentelemetry.js.api.${g}`), i = d2._globalThis;
-          b3.registerGlobal = function(a3, b4, c3, d3 = false) {
-            var f3;
-            let g2 = i[h] = null != (f3 = i[h]) ? f3 : { version: e2.VERSION };
-            if (!d3 && g2[a3]) {
-              let b5 = Error(`@opentelemetry/api: Attempted duplicate registration of API: ${a3}`);
-              return c3.error(b5.stack || b5.message), false;
-            }
-            if (g2.version !== e2.VERSION) {
-              let b5 = Error(`@opentelemetry/api: Registration of version v${g2.version} for ${a3} does not match previously registered API v${e2.VERSION}`);
-              return c3.error(b5.stack || b5.message), false;
-            }
-            return g2[a3] = b4, c3.debug(`@opentelemetry/api: Registered a global for ${a3} v${e2.VERSION}.`), true;
-          }, b3.getGlobal = function(a3) {
-            var b4, c3;
-            let d3 = null == (b4 = i[h]) ? void 0 : b4.version;
-            if (d3 && (0, f2.isCompatible)(d3)) return null == (c3 = i[h]) ? void 0 : c3[a3];
-          }, b3.unregisterGlobal = function(a3, b4) {
-            b4.debug(`@opentelemetry/api: Unregistering a global for ${a3} v${e2.VERSION}.`);
-            let c3 = i[h];
-            c3 && delete c3[a3];
-          };
-        }, 130: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.isCompatible = b3._makeCompatibilityCheck = void 0;
-          let d2 = c2(521), e2 = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
-          function f2(a3) {
-            let b4 = /* @__PURE__ */ new Set([a3]), c3 = /* @__PURE__ */ new Set(), d3 = a3.match(e2);
-            if (!d3) return () => false;
-            let f3 = { major: +d3[1], minor: +d3[2], patch: +d3[3], prerelease: d3[4] };
-            if (null != f3.prerelease) return function(b5) {
-              return b5 === a3;
-            };
-            function g(a4) {
-              return c3.add(a4), false;
-            }
-            return function(a4) {
-              if (b4.has(a4)) return true;
-              if (c3.has(a4)) return false;
-              let d4 = a4.match(e2);
-              if (!d4) return g(a4);
-              let h = { major: +d4[1], minor: +d4[2], patch: +d4[3], prerelease: d4[4] };
-              if (null != h.prerelease || f3.major !== h.major) return g(a4);
-              if (0 === f3.major) return f3.minor === h.minor && f3.patch <= h.patch ? (b4.add(a4), true) : g(a4);
-              return f3.minor <= h.minor ? (b4.add(a4), true) : g(a4);
-            };
-          }
-          b3._makeCompatibilityCheck = f2, b3.isCompatible = f2(d2.VERSION);
-        }, 886: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.metrics = void 0, b3.metrics = c2(653).MetricsAPI.getInstance();
-        }, 901: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.ValueType = void 0, function(a3) {
-            a3[a3.INT = 0] = "INT", a3[a3.DOUBLE = 1] = "DOUBLE";
-          }(b3.ValueType || (b3.ValueType = {}));
-        }, 102: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.createNoopMeter = b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC = b3.NOOP_OBSERVABLE_GAUGE_METRIC = b3.NOOP_OBSERVABLE_COUNTER_METRIC = b3.NOOP_UP_DOWN_COUNTER_METRIC = b3.NOOP_HISTOGRAM_METRIC = b3.NOOP_COUNTER_METRIC = b3.NOOP_METER = b3.NoopObservableUpDownCounterMetric = b3.NoopObservableGaugeMetric = b3.NoopObservableCounterMetric = b3.NoopObservableMetric = b3.NoopHistogramMetric = b3.NoopUpDownCounterMetric = b3.NoopCounterMetric = b3.NoopMetric = b3.NoopMeter = void 0;
-          class c2 {
-            constructor() {
-            }
-            createHistogram(a3, c3) {
-              return b3.NOOP_HISTOGRAM_METRIC;
-            }
-            createCounter(a3, c3) {
-              return b3.NOOP_COUNTER_METRIC;
-            }
-            createUpDownCounter(a3, c3) {
-              return b3.NOOP_UP_DOWN_COUNTER_METRIC;
-            }
-            createObservableGauge(a3, c3) {
-              return b3.NOOP_OBSERVABLE_GAUGE_METRIC;
-            }
-            createObservableCounter(a3, c3) {
-              return b3.NOOP_OBSERVABLE_COUNTER_METRIC;
-            }
-            createObservableUpDownCounter(a3, c3) {
-              return b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC;
-            }
-            addBatchObservableCallback(a3, b4) {
-            }
-            removeBatchObservableCallback(a3) {
-            }
-          }
-          b3.NoopMeter = c2;
-          class d2 {
-          }
-          b3.NoopMetric = d2;
-          class e2 extends d2 {
-            add(a3, b4) {
-            }
-          }
-          b3.NoopCounterMetric = e2;
-          class f2 extends d2 {
-            add(a3, b4) {
-            }
-          }
-          b3.NoopUpDownCounterMetric = f2;
-          class g extends d2 {
-            record(a3, b4) {
-            }
-          }
-          b3.NoopHistogramMetric = g;
-          class h {
-            addCallback(a3) {
-            }
-            removeCallback(a3) {
-            }
-          }
-          b3.NoopObservableMetric = h;
-          class i extends h {
-          }
-          b3.NoopObservableCounterMetric = i;
-          class j extends h {
-          }
-          b3.NoopObservableGaugeMetric = j;
-          class k extends h {
-          }
-          b3.NoopObservableUpDownCounterMetric = k, b3.NOOP_METER = new c2(), b3.NOOP_COUNTER_METRIC = new e2(), b3.NOOP_HISTOGRAM_METRIC = new g(), b3.NOOP_UP_DOWN_COUNTER_METRIC = new f2(), b3.NOOP_OBSERVABLE_COUNTER_METRIC = new i(), b3.NOOP_OBSERVABLE_GAUGE_METRIC = new j(), b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC = new k(), b3.createNoopMeter = function() {
-            return b3.NOOP_METER;
-          };
-        }, 660: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NOOP_METER_PROVIDER = b3.NoopMeterProvider = void 0;
-          let d2 = c2(102);
-          class e2 {
-            getMeter(a3, b4, c3) {
-              return d2.NOOP_METER;
-            }
-          }
-          b3.NoopMeterProvider = e2, b3.NOOP_METER_PROVIDER = new e2();
-        }, 200: function(a2, b3, c2) {
-          var d2 = this && this.__createBinding || (Object.create ? function(a3, b4, c3, d3) {
-            void 0 === d3 && (d3 = c3), Object.defineProperty(a3, d3, { enumerable: true, get: function() {
-              return b4[c3];
-            } });
-          } : function(a3, b4, c3, d3) {
-            void 0 === d3 && (d3 = c3), a3[d3] = b4[c3];
-          }), e2 = this && this.__exportStar || function(a3, b4) {
-            for (var c3 in a3) "default" === c3 || Object.prototype.hasOwnProperty.call(b4, c3) || d2(b4, a3, c3);
-          };
-          Object.defineProperty(b3, "__esModule", { value: true }), e2(c2(46), b3);
-        }, 651: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3._globalThis = void 0, b3._globalThis = "object" == typeof globalThis ? globalThis : c.g;
-        }, 46: function(a2, b3, c2) {
-          var d2 = this && this.__createBinding || (Object.create ? function(a3, b4, c3, d3) {
-            void 0 === d3 && (d3 = c3), Object.defineProperty(a3, d3, { enumerable: true, get: function() {
-              return b4[c3];
-            } });
-          } : function(a3, b4, c3, d3) {
-            void 0 === d3 && (d3 = c3), a3[d3] = b4[c3];
-          }), e2 = this && this.__exportStar || function(a3, b4) {
-            for (var c3 in a3) "default" === c3 || Object.prototype.hasOwnProperty.call(b4, c3) || d2(b4, a3, c3);
-          };
-          Object.defineProperty(b3, "__esModule", { value: true }), e2(c2(651), b3);
-        }, 939: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.propagation = void 0, b3.propagation = c2(181).PropagationAPI.getInstance();
-        }, 874: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTextMapPropagator = void 0;
-          class c2 {
-            inject(a3, b4) {
-            }
-            extract(a3, b4) {
-              return a3;
-            }
-            fields() {
-              return [];
-            }
-          }
-          b3.NoopTextMapPropagator = c2;
-        }, 194: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.defaultTextMapSetter = b3.defaultTextMapGetter = void 0, b3.defaultTextMapGetter = { get(a3, b4) {
-            if (null != a3) return a3[b4];
-          }, keys: (a3) => null == a3 ? [] : Object.keys(a3) }, b3.defaultTextMapSetter = { set(a3, b4, c2) {
-            null != a3 && (a3[b4] = c2);
-          } };
-        }, 845: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.trace = void 0, b3.trace = c2(997).TraceAPI.getInstance();
-        }, 403: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NonRecordingSpan = void 0;
-          let d2 = c2(476);
-          class e2 {
-            constructor(a3 = d2.INVALID_SPAN_CONTEXT) {
-              this._spanContext = a3;
-            }
-            spanContext() {
-              return this._spanContext;
-            }
-            setAttribute(a3, b4) {
-              return this;
-            }
-            setAttributes(a3) {
-              return this;
-            }
-            addEvent(a3, b4) {
-              return this;
-            }
-            setStatus(a3) {
-              return this;
-            }
-            updateName(a3) {
-              return this;
-            }
-            end(a3) {
-            }
-            isRecording() {
-              return false;
-            }
-            recordException(a3, b4) {
-            }
-          }
-          b3.NonRecordingSpan = e2;
-        }, 614: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTracer = void 0;
-          let d2 = c2(491), e2 = c2(607), f2 = c2(403), g = c2(139), h = d2.ContextAPI.getInstance();
-          class i {
-            startSpan(a3, b4, c3 = h.active()) {
-              var d3;
-              if (null == b4 ? void 0 : b4.root) return new f2.NonRecordingSpan();
-              let i2 = c3 && (0, e2.getSpanContext)(c3);
-              return "object" == typeof (d3 = i2) && "string" == typeof d3.spanId && "string" == typeof d3.traceId && "number" == typeof d3.traceFlags && (0, g.isSpanContextValid)(i2) ? new f2.NonRecordingSpan(i2) : new f2.NonRecordingSpan();
-            }
-            startActiveSpan(a3, b4, c3, d3) {
-              let f3, g2, i2;
-              if (arguments.length < 2) return;
-              2 == arguments.length ? i2 = b4 : 3 == arguments.length ? (f3 = b4, i2 = c3) : (f3 = b4, g2 = c3, i2 = d3);
-              let j = null != g2 ? g2 : h.active(), k = this.startSpan(a3, f3, j), l = (0, e2.setSpan)(j, k);
-              return h.with(l, i2, void 0, k);
-            }
-          }
-          b3.NoopTracer = i;
-        }, 124: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTracerProvider = void 0;
-          let d2 = c2(614);
-          class e2 {
-            getTracer(a3, b4, c3) {
-              return new d2.NoopTracer();
-            }
-          }
-          b3.NoopTracerProvider = e2;
-        }, 125: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.ProxyTracer = void 0;
-          let d2 = new (c2(614)).NoopTracer();
-          class e2 {
-            constructor(a3, b4, c3, d3) {
-              this._provider = a3, this.name = b4, this.version = c3, this.options = d3;
-            }
-            startSpan(a3, b4, c3) {
-              return this._getTracer().startSpan(a3, b4, c3);
-            }
-            startActiveSpan(a3, b4, c3, d3) {
-              let e3 = this._getTracer();
-              return Reflect.apply(e3.startActiveSpan, e3, arguments);
-            }
-            _getTracer() {
-              if (this._delegate) return this._delegate;
-              let a3 = this._provider.getDelegateTracer(this.name, this.version, this.options);
-              return a3 ? (this._delegate = a3, this._delegate) : d2;
-            }
-          }
-          b3.ProxyTracer = e2;
-        }, 846: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.ProxyTracerProvider = void 0;
-          let d2 = c2(125), e2 = new (c2(124)).NoopTracerProvider();
-          class f2 {
-            getTracer(a3, b4, c3) {
-              var e3;
-              return null != (e3 = this.getDelegateTracer(a3, b4, c3)) ? e3 : new d2.ProxyTracer(this, a3, b4, c3);
-            }
-            getDelegate() {
-              var a3;
-              return null != (a3 = this._delegate) ? a3 : e2;
-            }
-            setDelegate(a3) {
-              this._delegate = a3;
-            }
-            getDelegateTracer(a3, b4, c3) {
-              var d3;
-              return null == (d3 = this._delegate) ? void 0 : d3.getTracer(a3, b4, c3);
-            }
-          }
-          b3.ProxyTracerProvider = f2;
-        }, 996: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.SamplingDecision = void 0, function(a3) {
-            a3[a3.NOT_RECORD = 0] = "NOT_RECORD", a3[a3.RECORD = 1] = "RECORD", a3[a3.RECORD_AND_SAMPLED = 2] = "RECORD_AND_SAMPLED";
-          }(b3.SamplingDecision || (b3.SamplingDecision = {}));
-        }, 607: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.getSpanContext = b3.setSpanContext = b3.deleteSpan = b3.setSpan = b3.getActiveSpan = b3.getSpan = void 0;
-          let d2 = c2(780), e2 = c2(403), f2 = c2(491), g = (0, d2.createContextKey)("OpenTelemetry Context Key SPAN");
-          function h(a3) {
-            return a3.getValue(g) || void 0;
-          }
-          function i(a3, b4) {
-            return a3.setValue(g, b4);
-          }
-          b3.getSpan = h, b3.getActiveSpan = function() {
-            return h(f2.ContextAPI.getInstance().active());
-          }, b3.setSpan = i, b3.deleteSpan = function(a3) {
-            return a3.deleteValue(g);
-          }, b3.setSpanContext = function(a3, b4) {
-            return i(a3, new e2.NonRecordingSpan(b4));
-          }, b3.getSpanContext = function(a3) {
-            var b4;
-            return null == (b4 = h(a3)) ? void 0 : b4.spanContext();
-          };
-        }, 325: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceStateImpl = void 0;
-          let d2 = c2(564);
-          class e2 {
-            constructor(a3) {
-              this._internalState = /* @__PURE__ */ new Map(), a3 && this._parse(a3);
-            }
-            set(a3, b4) {
-              let c3 = this._clone();
-              return c3._internalState.has(a3) && c3._internalState.delete(a3), c3._internalState.set(a3, b4), c3;
-            }
-            unset(a3) {
-              let b4 = this._clone();
-              return b4._internalState.delete(a3), b4;
-            }
-            get(a3) {
-              return this._internalState.get(a3);
-            }
-            serialize() {
-              return this._keys().reduce((a3, b4) => (a3.push(b4 + "=" + this.get(b4)), a3), []).join(",");
-            }
-            _parse(a3) {
-              !(a3.length > 512) && (this._internalState = a3.split(",").reverse().reduce((a4, b4) => {
-                let c3 = b4.trim(), e3 = c3.indexOf("=");
-                if (-1 !== e3) {
-                  let f2 = c3.slice(0, e3), g = c3.slice(e3 + 1, b4.length);
-                  (0, d2.validateKey)(f2) && (0, d2.validateValue)(g) && a4.set(f2, g);
-                }
-                return a4;
-              }, /* @__PURE__ */ new Map()), this._internalState.size > 32 && (this._internalState = new Map(Array.from(this._internalState.entries()).reverse().slice(0, 32))));
-            }
-            _keys() {
-              return Array.from(this._internalState.keys()).reverse();
-            }
-            _clone() {
-              let a3 = new e2();
-              return a3._internalState = new Map(this._internalState), a3;
-            }
-          }
-          b3.TraceStateImpl = e2;
-        }, 564: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.validateValue = b3.validateKey = void 0;
-          let c2 = "[_0-9a-z-*/]", d2 = `[a-z]${c2}{0,255}`, e2 = `[a-z0-9]${c2}{0,240}@[a-z]${c2}{0,13}`, f2 = RegExp(`^(?:${d2}|${e2})$`), g = /^[ -~]{0,255}[!-~]$/, h = /,|=/;
-          b3.validateKey = function(a3) {
-            return f2.test(a3);
-          }, b3.validateValue = function(a3) {
-            return g.test(a3) && !h.test(a3);
-          };
-        }, 98: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.createTraceState = void 0;
-          let d2 = c2(325);
-          b3.createTraceState = function(a3) {
-            return new d2.TraceStateImpl(a3);
-          };
-        }, 476: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.INVALID_SPAN_CONTEXT = b3.INVALID_TRACEID = b3.INVALID_SPANID = void 0;
-          let d2 = c2(475);
-          b3.INVALID_SPANID = "0000000000000000", b3.INVALID_TRACEID = "00000000000000000000000000000000", b3.INVALID_SPAN_CONTEXT = { traceId: b3.INVALID_TRACEID, spanId: b3.INVALID_SPANID, traceFlags: d2.TraceFlags.NONE };
-        }, 357: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.SpanKind = void 0, function(a3) {
-            a3[a3.INTERNAL = 0] = "INTERNAL", a3[a3.SERVER = 1] = "SERVER", a3[a3.CLIENT = 2] = "CLIENT", a3[a3.PRODUCER = 3] = "PRODUCER", a3[a3.CONSUMER = 4] = "CONSUMER";
-          }(b3.SpanKind || (b3.SpanKind = {}));
-        }, 139: (a2, b3, c2) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.wrapSpanContext = b3.isSpanContextValid = b3.isValidSpanId = b3.isValidTraceId = void 0;
-          let d2 = c2(476), e2 = c2(403), f2 = /^([0-9a-f]{32})$/i, g = /^[0-9a-f]{16}$/i;
-          function h(a3) {
-            return f2.test(a3) && a3 !== d2.INVALID_TRACEID;
-          }
-          function i(a3) {
-            return g.test(a3) && a3 !== d2.INVALID_SPANID;
-          }
-          b3.isValidTraceId = h, b3.isValidSpanId = i, b3.isSpanContextValid = function(a3) {
-            return h(a3.traceId) && i(a3.spanId);
-          }, b3.wrapSpanContext = function(a3) {
-            return new e2.NonRecordingSpan(a3);
-          };
-        }, 847: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.SpanStatusCode = void 0, function(a3) {
-            a3[a3.UNSET = 0] = "UNSET", a3[a3.OK = 1] = "OK", a3[a3.ERROR = 2] = "ERROR";
-          }(b3.SpanStatusCode || (b3.SpanStatusCode = {}));
-        }, 475: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceFlags = void 0, function(a3) {
-            a3[a3.NONE = 0] = "NONE", a3[a3.SAMPLED = 1] = "SAMPLED";
-          }(b3.TraceFlags || (b3.TraceFlags = {}));
-        }, 521: (a2, b3) => {
-          Object.defineProperty(b3, "__esModule", { value: true }), b3.VERSION = void 0, b3.VERSION = "1.6.0";
-        } }, d = {};
-        function e(a2) {
-          var c2 = d[a2];
-          if (void 0 !== c2) return c2.exports;
-          var f2 = d[a2] = { exports: {} }, g = true;
-          try {
-            b2[a2].call(f2.exports, f2, f2.exports, e), g = false;
-          } finally {
-            g && delete d[a2];
-          }
-          return f2.exports;
-        }
-        e.ab = "//";
-        var f = {};
-        (() => {
-          Object.defineProperty(f, "__esModule", { value: true }), f.trace = f.propagation = f.metrics = f.diag = f.context = f.INVALID_SPAN_CONTEXT = f.INVALID_TRACEID = f.INVALID_SPANID = f.isValidSpanId = f.isValidTraceId = f.isSpanContextValid = f.createTraceState = f.TraceFlags = f.SpanStatusCode = f.SpanKind = f.SamplingDecision = f.ProxyTracerProvider = f.ProxyTracer = f.defaultTextMapSetter = f.defaultTextMapGetter = f.ValueType = f.createNoopMeter = f.DiagLogLevel = f.DiagConsoleLogger = f.ROOT_CONTEXT = f.createContextKey = f.baggageEntryMetadataFromString = void 0;
-          var a2 = e(369);
-          Object.defineProperty(f, "baggageEntryMetadataFromString", { enumerable: true, get: function() {
-            return a2.baggageEntryMetadataFromString;
-          } });
-          var b3 = e(780);
-          Object.defineProperty(f, "createContextKey", { enumerable: true, get: function() {
-            return b3.createContextKey;
-          } }), Object.defineProperty(f, "ROOT_CONTEXT", { enumerable: true, get: function() {
-            return b3.ROOT_CONTEXT;
-          } });
-          var c2 = e(972);
-          Object.defineProperty(f, "DiagConsoleLogger", { enumerable: true, get: function() {
-            return c2.DiagConsoleLogger;
-          } });
-          var d2 = e(957);
-          Object.defineProperty(f, "DiagLogLevel", { enumerable: true, get: function() {
-            return d2.DiagLogLevel;
-          } });
-          var g = e(102);
-          Object.defineProperty(f, "createNoopMeter", { enumerable: true, get: function() {
-            return g.createNoopMeter;
-          } });
-          var h = e(901);
-          Object.defineProperty(f, "ValueType", { enumerable: true, get: function() {
-            return h.ValueType;
-          } });
-          var i = e(194);
-          Object.defineProperty(f, "defaultTextMapGetter", { enumerable: true, get: function() {
-            return i.defaultTextMapGetter;
-          } }), Object.defineProperty(f, "defaultTextMapSetter", { enumerable: true, get: function() {
-            return i.defaultTextMapSetter;
-          } });
-          var j = e(125);
-          Object.defineProperty(f, "ProxyTracer", { enumerable: true, get: function() {
-            return j.ProxyTracer;
-          } });
-          var k = e(846);
-          Object.defineProperty(f, "ProxyTracerProvider", { enumerable: true, get: function() {
-            return k.ProxyTracerProvider;
-          } });
-          var l = e(996);
-          Object.defineProperty(f, "SamplingDecision", { enumerable: true, get: function() {
-            return l.SamplingDecision;
-          } });
-          var m = e(357);
-          Object.defineProperty(f, "SpanKind", { enumerable: true, get: function() {
-            return m.SpanKind;
-          } });
-          var n = e(847);
-          Object.defineProperty(f, "SpanStatusCode", { enumerable: true, get: function() {
-            return n.SpanStatusCode;
-          } });
-          var o = e(475);
-          Object.defineProperty(f, "TraceFlags", { enumerable: true, get: function() {
-            return o.TraceFlags;
-          } });
-          var p = e(98);
-          Object.defineProperty(f, "createTraceState", { enumerable: true, get: function() {
-            return p.createTraceState;
-          } });
-          var q = e(139);
-          Object.defineProperty(f, "isSpanContextValid", { enumerable: true, get: function() {
-            return q.isSpanContextValid;
-          } }), Object.defineProperty(f, "isValidTraceId", { enumerable: true, get: function() {
-            return q.isValidTraceId;
-          } }), Object.defineProperty(f, "isValidSpanId", { enumerable: true, get: function() {
-            return q.isValidSpanId;
-          } });
-          var r = e(476);
-          Object.defineProperty(f, "INVALID_SPANID", { enumerable: true, get: function() {
-            return r.INVALID_SPANID;
-          } }), Object.defineProperty(f, "INVALID_TRACEID", { enumerable: true, get: function() {
-            return r.INVALID_TRACEID;
-          } }), Object.defineProperty(f, "INVALID_SPAN_CONTEXT", { enumerable: true, get: function() {
-            return r.INVALID_SPAN_CONTEXT;
-          } });
-          let s = e(67);
-          Object.defineProperty(f, "context", { enumerable: true, get: function() {
-            return s.context;
-          } });
-          let t = e(506);
-          Object.defineProperty(f, "diag", { enumerable: true, get: function() {
-            return t.diag;
-          } });
-          let u = e(886);
-          Object.defineProperty(f, "metrics", { enumerable: true, get: function() {
-            return u.metrics;
-          } });
-          let v = e(939);
-          Object.defineProperty(f, "propagation", { enumerable: true, get: function() {
-            return v.propagation;
-          } });
-          let w = e(845);
-          Object.defineProperty(f, "trace", { enumerable: true, get: function() {
-            return w.trace;
-          } }), f.default = { context: s.context, diag: t.diag, metrics: u.metrics, propagation: v.propagation, trace: w.trace };
-        })(), a.exports = f;
-      })();
-    }, 925: (a, b, c) => {
+    }, 613: (a, b, c) => {
       "use strict";
       let d;
       c.r(b), c.d(b, { default: () => by });
@@ -3521,8 +2635,894 @@ Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime`;
           }
         } });
       }
+    }, 663: (a) => {
+      (() => {
+        "use strict";
+        "undefined" != typeof __nccwpck_require__ && (__nccwpck_require__.ab = "//");
+        var b = {};
+        (() => {
+          b.parse = function(b2, c2) {
+            if ("string" != typeof b2) throw TypeError("argument str must be a string");
+            for (var e2 = {}, f = b2.split(d), g = (c2 || {}).decode || a2, h = 0; h < f.length; h++) {
+              var i = f[h], j = i.indexOf("=");
+              if (!(j < 0)) {
+                var k = i.substr(0, j).trim(), l = i.substr(++j, i.length).trim();
+                '"' == l[0] && (l = l.slice(1, -1)), void 0 == e2[k] && (e2[k] = function(a3, b3) {
+                  try {
+                    return b3(a3);
+                  } catch (b4) {
+                    return a3;
+                  }
+                }(l, g));
+              }
+            }
+            return e2;
+          }, b.serialize = function(a3, b2, d2) {
+            var f = d2 || {}, g = f.encode || c;
+            if ("function" != typeof g) throw TypeError("option encode is invalid");
+            if (!e.test(a3)) throw TypeError("argument name is invalid");
+            var h = g(b2);
+            if (h && !e.test(h)) throw TypeError("argument val is invalid");
+            var i = a3 + "=" + h;
+            if (null != f.maxAge) {
+              var j = f.maxAge - 0;
+              if (isNaN(j) || !isFinite(j)) throw TypeError("option maxAge is invalid");
+              i += "; Max-Age=" + Math.floor(j);
+            }
+            if (f.domain) {
+              if (!e.test(f.domain)) throw TypeError("option domain is invalid");
+              i += "; Domain=" + f.domain;
+            }
+            if (f.path) {
+              if (!e.test(f.path)) throw TypeError("option path is invalid");
+              i += "; Path=" + f.path;
+            }
+            if (f.expires) {
+              if ("function" != typeof f.expires.toUTCString) throw TypeError("option expires is invalid");
+              i += "; Expires=" + f.expires.toUTCString();
+            }
+            if (f.httpOnly && (i += "; HttpOnly"), f.secure && (i += "; Secure"), f.sameSite) switch ("string" == typeof f.sameSite ? f.sameSite.toLowerCase() : f.sameSite) {
+              case true:
+              case "strict":
+                i += "; SameSite=Strict";
+                break;
+              case "lax":
+                i += "; SameSite=Lax";
+                break;
+              case "none":
+                i += "; SameSite=None";
+                break;
+              default:
+                throw TypeError("option sameSite is invalid");
+            }
+            return i;
+          };
+          var a2 = decodeURIComponent, c = encodeURIComponent, d = /; */, e = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
+        })(), a.exports = b;
+      })();
+    }, 720: (a, b, c) => {
+      "use strict";
+      Object.defineProperty(b, "__esModule", { value: true }), !function(a2, b2) {
+        for (var c2 in b2) Object.defineProperty(a2, c2, { enumerable: true, get: b2[c2] });
+      }(b, { interceptTestApis: function() {
+        return f;
+      }, wrapRequestHandler: function() {
+        return g;
+      } });
+      let d = c(392), e = c(165);
+      function f() {
+        return (0, e.interceptFetch)(c.g.fetch);
+      }
+      function g(a2) {
+        return (b2, c2) => (0, d.withRequest)(b2, e.reader, () => a2(b2, c2));
+      }
+    }, 814: (a, b, c) => {
+      "use strict";
+      a.exports = c(440);
+    }, 817: (a, b, c) => {
+      (() => {
+        "use strict";
+        var b2 = { 491: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.ContextAPI = void 0;
+          let d2 = c2(223), e2 = c2(172), f2 = c2(930), g = "context", h = new d2.NoopContextManager();
+          class i {
+            constructor() {
+            }
+            static getInstance() {
+              return this._instance || (this._instance = new i()), this._instance;
+            }
+            setGlobalContextManager(a3) {
+              return (0, e2.registerGlobal)(g, a3, f2.DiagAPI.instance());
+            }
+            active() {
+              return this._getContextManager().active();
+            }
+            with(a3, b4, c3, ...d3) {
+              return this._getContextManager().with(a3, b4, c3, ...d3);
+            }
+            bind(a3, b4) {
+              return this._getContextManager().bind(a3, b4);
+            }
+            _getContextManager() {
+              return (0, e2.getGlobal)(g) || h;
+            }
+            disable() {
+              this._getContextManager().disable(), (0, e2.unregisterGlobal)(g, f2.DiagAPI.instance());
+            }
+          }
+          b3.ContextAPI = i;
+        }, 930: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagAPI = void 0;
+          let d2 = c2(56), e2 = c2(912), f2 = c2(957), g = c2(172);
+          class h {
+            constructor() {
+              function a3(a4) {
+                return function(...b5) {
+                  let c3 = (0, g.getGlobal)("diag");
+                  if (c3) return c3[a4](...b5);
+                };
+              }
+              let b4 = this;
+              b4.setLogger = (a4, c3 = { logLevel: f2.DiagLogLevel.INFO }) => {
+                var d3, h2, i;
+                if (a4 === b4) {
+                  let a5 = Error("Cannot use diag as the logger for itself. Please use a DiagLogger implementation like ConsoleDiagLogger or a custom implementation");
+                  return b4.error(null != (d3 = a5.stack) ? d3 : a5.message), false;
+                }
+                "number" == typeof c3 && (c3 = { logLevel: c3 });
+                let j = (0, g.getGlobal)("diag"), k = (0, e2.createLogLevelDiagLogger)(null != (h2 = c3.logLevel) ? h2 : f2.DiagLogLevel.INFO, a4);
+                if (j && !c3.suppressOverrideMessage) {
+                  let a5 = null != (i = Error().stack) ? i : "<failed to generate stacktrace>";
+                  j.warn(`Current logger will be overwritten from ${a5}`), k.warn(`Current logger will overwrite one already registered from ${a5}`);
+                }
+                return (0, g.registerGlobal)("diag", k, b4, true);
+              }, b4.disable = () => {
+                (0, g.unregisterGlobal)("diag", b4);
+              }, b4.createComponentLogger = (a4) => new d2.DiagComponentLogger(a4), b4.verbose = a3("verbose"), b4.debug = a3("debug"), b4.info = a3("info"), b4.warn = a3("warn"), b4.error = a3("error");
+            }
+            static instance() {
+              return this._instance || (this._instance = new h()), this._instance;
+            }
+          }
+          b3.DiagAPI = h;
+        }, 653: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.MetricsAPI = void 0;
+          let d2 = c2(660), e2 = c2(172), f2 = c2(930), g = "metrics";
+          class h {
+            constructor() {
+            }
+            static getInstance() {
+              return this._instance || (this._instance = new h()), this._instance;
+            }
+            setGlobalMeterProvider(a3) {
+              return (0, e2.registerGlobal)(g, a3, f2.DiagAPI.instance());
+            }
+            getMeterProvider() {
+              return (0, e2.getGlobal)(g) || d2.NOOP_METER_PROVIDER;
+            }
+            getMeter(a3, b4, c3) {
+              return this.getMeterProvider().getMeter(a3, b4, c3);
+            }
+            disable() {
+              (0, e2.unregisterGlobal)(g, f2.DiagAPI.instance());
+            }
+          }
+          b3.MetricsAPI = h;
+        }, 181: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.PropagationAPI = void 0;
+          let d2 = c2(172), e2 = c2(874), f2 = c2(194), g = c2(277), h = c2(369), i = c2(930), j = "propagation", k = new e2.NoopTextMapPropagator();
+          class l {
+            constructor() {
+              this.createBaggage = h.createBaggage, this.getBaggage = g.getBaggage, this.getActiveBaggage = g.getActiveBaggage, this.setBaggage = g.setBaggage, this.deleteBaggage = g.deleteBaggage;
+            }
+            static getInstance() {
+              return this._instance || (this._instance = new l()), this._instance;
+            }
+            setGlobalPropagator(a3) {
+              return (0, d2.registerGlobal)(j, a3, i.DiagAPI.instance());
+            }
+            inject(a3, b4, c3 = f2.defaultTextMapSetter) {
+              return this._getGlobalPropagator().inject(a3, b4, c3);
+            }
+            extract(a3, b4, c3 = f2.defaultTextMapGetter) {
+              return this._getGlobalPropagator().extract(a3, b4, c3);
+            }
+            fields() {
+              return this._getGlobalPropagator().fields();
+            }
+            disable() {
+              (0, d2.unregisterGlobal)(j, i.DiagAPI.instance());
+            }
+            _getGlobalPropagator() {
+              return (0, d2.getGlobal)(j) || k;
+            }
+          }
+          b3.PropagationAPI = l;
+        }, 997: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceAPI = void 0;
+          let d2 = c2(172), e2 = c2(846), f2 = c2(139), g = c2(607), h = c2(930), i = "trace";
+          class j {
+            constructor() {
+              this._proxyTracerProvider = new e2.ProxyTracerProvider(), this.wrapSpanContext = f2.wrapSpanContext, this.isSpanContextValid = f2.isSpanContextValid, this.deleteSpan = g.deleteSpan, this.getSpan = g.getSpan, this.getActiveSpan = g.getActiveSpan, this.getSpanContext = g.getSpanContext, this.setSpan = g.setSpan, this.setSpanContext = g.setSpanContext;
+            }
+            static getInstance() {
+              return this._instance || (this._instance = new j()), this._instance;
+            }
+            setGlobalTracerProvider(a3) {
+              let b4 = (0, d2.registerGlobal)(i, this._proxyTracerProvider, h.DiagAPI.instance());
+              return b4 && this._proxyTracerProvider.setDelegate(a3), b4;
+            }
+            getTracerProvider() {
+              return (0, d2.getGlobal)(i) || this._proxyTracerProvider;
+            }
+            getTracer(a3, b4) {
+              return this.getTracerProvider().getTracer(a3, b4);
+            }
+            disable() {
+              (0, d2.unregisterGlobal)(i, h.DiagAPI.instance()), this._proxyTracerProvider = new e2.ProxyTracerProvider();
+            }
+          }
+          b3.TraceAPI = j;
+        }, 277: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.deleteBaggage = b3.setBaggage = b3.getActiveBaggage = b3.getBaggage = void 0;
+          let d2 = c2(491), e2 = (0, c2(780).createContextKey)("OpenTelemetry Baggage Key");
+          function f2(a3) {
+            return a3.getValue(e2) || void 0;
+          }
+          b3.getBaggage = f2, b3.getActiveBaggage = function() {
+            return f2(d2.ContextAPI.getInstance().active());
+          }, b3.setBaggage = function(a3, b4) {
+            return a3.setValue(e2, b4);
+          }, b3.deleteBaggage = function(a3) {
+            return a3.deleteValue(e2);
+          };
+        }, 993: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.BaggageImpl = void 0;
+          class c2 {
+            constructor(a3) {
+              this._entries = a3 ? new Map(a3) : /* @__PURE__ */ new Map();
+            }
+            getEntry(a3) {
+              let b4 = this._entries.get(a3);
+              if (b4) return Object.assign({}, b4);
+            }
+            getAllEntries() {
+              return Array.from(this._entries.entries()).map(([a3, b4]) => [a3, b4]);
+            }
+            setEntry(a3, b4) {
+              let d2 = new c2(this._entries);
+              return d2._entries.set(a3, b4), d2;
+            }
+            removeEntry(a3) {
+              let b4 = new c2(this._entries);
+              return b4._entries.delete(a3), b4;
+            }
+            removeEntries(...a3) {
+              let b4 = new c2(this._entries);
+              for (let c3 of a3) b4._entries.delete(c3);
+              return b4;
+            }
+            clear() {
+              return new c2();
+            }
+          }
+          b3.BaggageImpl = c2;
+        }, 830: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.baggageEntryMetadataSymbol = void 0, b3.baggageEntryMetadataSymbol = Symbol("BaggageEntryMetadata");
+        }, 369: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.baggageEntryMetadataFromString = b3.createBaggage = void 0;
+          let d2 = c2(930), e2 = c2(993), f2 = c2(830), g = d2.DiagAPI.instance();
+          b3.createBaggage = function(a3 = {}) {
+            return new e2.BaggageImpl(new Map(Object.entries(a3)));
+          }, b3.baggageEntryMetadataFromString = function(a3) {
+            return "string" != typeof a3 && (g.error(`Cannot create baggage metadata from unknown type: ${typeof a3}`), a3 = ""), { __TYPE__: f2.baggageEntryMetadataSymbol, toString: () => a3 };
+          };
+        }, 67: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.context = void 0, b3.context = c2(491).ContextAPI.getInstance();
+        }, 223: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopContextManager = void 0;
+          let d2 = c2(780);
+          class e2 {
+            active() {
+              return d2.ROOT_CONTEXT;
+            }
+            with(a3, b4, c3, ...d3) {
+              return b4.call(c3, ...d3);
+            }
+            bind(a3, b4) {
+              return b4;
+            }
+            enable() {
+              return this;
+            }
+            disable() {
+              return this;
+            }
+          }
+          b3.NoopContextManager = e2;
+        }, 780: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.ROOT_CONTEXT = b3.createContextKey = void 0, b3.createContextKey = function(a3) {
+            return Symbol.for(a3);
+          };
+          class c2 {
+            constructor(a3) {
+              let b4 = this;
+              b4._currentContext = a3 ? new Map(a3) : /* @__PURE__ */ new Map(), b4.getValue = (a4) => b4._currentContext.get(a4), b4.setValue = (a4, d2) => {
+                let e2 = new c2(b4._currentContext);
+                return e2._currentContext.set(a4, d2), e2;
+              }, b4.deleteValue = (a4) => {
+                let d2 = new c2(b4._currentContext);
+                return d2._currentContext.delete(a4), d2;
+              };
+            }
+          }
+          b3.ROOT_CONTEXT = new c2();
+        }, 506: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.diag = void 0, b3.diag = c2(930).DiagAPI.instance();
+        }, 56: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagComponentLogger = void 0;
+          let d2 = c2(172);
+          class e2 {
+            constructor(a3) {
+              this._namespace = a3.namespace || "DiagComponentLogger";
+            }
+            debug(...a3) {
+              return f2("debug", this._namespace, a3);
+            }
+            error(...a3) {
+              return f2("error", this._namespace, a3);
+            }
+            info(...a3) {
+              return f2("info", this._namespace, a3);
+            }
+            warn(...a3) {
+              return f2("warn", this._namespace, a3);
+            }
+            verbose(...a3) {
+              return f2("verbose", this._namespace, a3);
+            }
+          }
+          function f2(a3, b4, c3) {
+            let e3 = (0, d2.getGlobal)("diag");
+            if (e3) return c3.unshift(b4), e3[a3](...c3);
+          }
+          b3.DiagComponentLogger = e2;
+        }, 972: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagConsoleLogger = void 0;
+          let c2 = [{ n: "error", c: "error" }, { n: "warn", c: "warn" }, { n: "info", c: "info" }, { n: "debug", c: "debug" }, { n: "verbose", c: "trace" }];
+          class d2 {
+            constructor() {
+              for (let a3 = 0; a3 < c2.length; a3++) this[c2[a3].n] = /* @__PURE__ */ function(a4) {
+                return function(...b4) {
+                  if (console) {
+                    let c3 = console[a4];
+                    if ("function" != typeof c3 && (c3 = console.log), "function" == typeof c3) return c3.apply(console, b4);
+                  }
+                };
+              }(c2[a3].c);
+            }
+          }
+          b3.DiagConsoleLogger = d2;
+        }, 912: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.createLogLevelDiagLogger = void 0;
+          let d2 = c2(957);
+          b3.createLogLevelDiagLogger = function(a3, b4) {
+            function c3(c4, d3) {
+              let e2 = b4[c4];
+              return "function" == typeof e2 && a3 >= d3 ? e2.bind(b4) : function() {
+              };
+            }
+            return a3 < d2.DiagLogLevel.NONE ? a3 = d2.DiagLogLevel.NONE : a3 > d2.DiagLogLevel.ALL && (a3 = d2.DiagLogLevel.ALL), b4 = b4 || {}, { error: c3("error", d2.DiagLogLevel.ERROR), warn: c3("warn", d2.DiagLogLevel.WARN), info: c3("info", d2.DiagLogLevel.INFO), debug: c3("debug", d2.DiagLogLevel.DEBUG), verbose: c3("verbose", d2.DiagLogLevel.VERBOSE) };
+          };
+        }, 957: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.DiagLogLevel = void 0, function(a3) {
+            a3[a3.NONE = 0] = "NONE", a3[a3.ERROR = 30] = "ERROR", a3[a3.WARN = 50] = "WARN", a3[a3.INFO = 60] = "INFO", a3[a3.DEBUG = 70] = "DEBUG", a3[a3.VERBOSE = 80] = "VERBOSE", a3[a3.ALL = 9999] = "ALL";
+          }(b3.DiagLogLevel || (b3.DiagLogLevel = {}));
+        }, 172: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.unregisterGlobal = b3.getGlobal = b3.registerGlobal = void 0;
+          let d2 = c2(200), e2 = c2(521), f2 = c2(130), g = e2.VERSION.split(".")[0], h = Symbol.for(`opentelemetry.js.api.${g}`), i = d2._globalThis;
+          b3.registerGlobal = function(a3, b4, c3, d3 = false) {
+            var f3;
+            let g2 = i[h] = null != (f3 = i[h]) ? f3 : { version: e2.VERSION };
+            if (!d3 && g2[a3]) {
+              let b5 = Error(`@opentelemetry/api: Attempted duplicate registration of API: ${a3}`);
+              return c3.error(b5.stack || b5.message), false;
+            }
+            if (g2.version !== e2.VERSION) {
+              let b5 = Error(`@opentelemetry/api: Registration of version v${g2.version} for ${a3} does not match previously registered API v${e2.VERSION}`);
+              return c3.error(b5.stack || b5.message), false;
+            }
+            return g2[a3] = b4, c3.debug(`@opentelemetry/api: Registered a global for ${a3} v${e2.VERSION}.`), true;
+          }, b3.getGlobal = function(a3) {
+            var b4, c3;
+            let d3 = null == (b4 = i[h]) ? void 0 : b4.version;
+            if (d3 && (0, f2.isCompatible)(d3)) return null == (c3 = i[h]) ? void 0 : c3[a3];
+          }, b3.unregisterGlobal = function(a3, b4) {
+            b4.debug(`@opentelemetry/api: Unregistering a global for ${a3} v${e2.VERSION}.`);
+            let c3 = i[h];
+            c3 && delete c3[a3];
+          };
+        }, 130: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.isCompatible = b3._makeCompatibilityCheck = void 0;
+          let d2 = c2(521), e2 = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
+          function f2(a3) {
+            let b4 = /* @__PURE__ */ new Set([a3]), c3 = /* @__PURE__ */ new Set(), d3 = a3.match(e2);
+            if (!d3) return () => false;
+            let f3 = { major: +d3[1], minor: +d3[2], patch: +d3[3], prerelease: d3[4] };
+            if (null != f3.prerelease) return function(b5) {
+              return b5 === a3;
+            };
+            function g(a4) {
+              return c3.add(a4), false;
+            }
+            return function(a4) {
+              if (b4.has(a4)) return true;
+              if (c3.has(a4)) return false;
+              let d4 = a4.match(e2);
+              if (!d4) return g(a4);
+              let h = { major: +d4[1], minor: +d4[2], patch: +d4[3], prerelease: d4[4] };
+              if (null != h.prerelease || f3.major !== h.major) return g(a4);
+              if (0 === f3.major) return f3.minor === h.minor && f3.patch <= h.patch ? (b4.add(a4), true) : g(a4);
+              return f3.minor <= h.minor ? (b4.add(a4), true) : g(a4);
+            };
+          }
+          b3._makeCompatibilityCheck = f2, b3.isCompatible = f2(d2.VERSION);
+        }, 886: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.metrics = void 0, b3.metrics = c2(653).MetricsAPI.getInstance();
+        }, 901: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.ValueType = void 0, function(a3) {
+            a3[a3.INT = 0] = "INT", a3[a3.DOUBLE = 1] = "DOUBLE";
+          }(b3.ValueType || (b3.ValueType = {}));
+        }, 102: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.createNoopMeter = b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC = b3.NOOP_OBSERVABLE_GAUGE_METRIC = b3.NOOP_OBSERVABLE_COUNTER_METRIC = b3.NOOP_UP_DOWN_COUNTER_METRIC = b3.NOOP_HISTOGRAM_METRIC = b3.NOOP_COUNTER_METRIC = b3.NOOP_METER = b3.NoopObservableUpDownCounterMetric = b3.NoopObservableGaugeMetric = b3.NoopObservableCounterMetric = b3.NoopObservableMetric = b3.NoopHistogramMetric = b3.NoopUpDownCounterMetric = b3.NoopCounterMetric = b3.NoopMetric = b3.NoopMeter = void 0;
+          class c2 {
+            constructor() {
+            }
+            createHistogram(a3, c3) {
+              return b3.NOOP_HISTOGRAM_METRIC;
+            }
+            createCounter(a3, c3) {
+              return b3.NOOP_COUNTER_METRIC;
+            }
+            createUpDownCounter(a3, c3) {
+              return b3.NOOP_UP_DOWN_COUNTER_METRIC;
+            }
+            createObservableGauge(a3, c3) {
+              return b3.NOOP_OBSERVABLE_GAUGE_METRIC;
+            }
+            createObservableCounter(a3, c3) {
+              return b3.NOOP_OBSERVABLE_COUNTER_METRIC;
+            }
+            createObservableUpDownCounter(a3, c3) {
+              return b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC;
+            }
+            addBatchObservableCallback(a3, b4) {
+            }
+            removeBatchObservableCallback(a3) {
+            }
+          }
+          b3.NoopMeter = c2;
+          class d2 {
+          }
+          b3.NoopMetric = d2;
+          class e2 extends d2 {
+            add(a3, b4) {
+            }
+          }
+          b3.NoopCounterMetric = e2;
+          class f2 extends d2 {
+            add(a3, b4) {
+            }
+          }
+          b3.NoopUpDownCounterMetric = f2;
+          class g extends d2 {
+            record(a3, b4) {
+            }
+          }
+          b3.NoopHistogramMetric = g;
+          class h {
+            addCallback(a3) {
+            }
+            removeCallback(a3) {
+            }
+          }
+          b3.NoopObservableMetric = h;
+          class i extends h {
+          }
+          b3.NoopObservableCounterMetric = i;
+          class j extends h {
+          }
+          b3.NoopObservableGaugeMetric = j;
+          class k extends h {
+          }
+          b3.NoopObservableUpDownCounterMetric = k, b3.NOOP_METER = new c2(), b3.NOOP_COUNTER_METRIC = new e2(), b3.NOOP_HISTOGRAM_METRIC = new g(), b3.NOOP_UP_DOWN_COUNTER_METRIC = new f2(), b3.NOOP_OBSERVABLE_COUNTER_METRIC = new i(), b3.NOOP_OBSERVABLE_GAUGE_METRIC = new j(), b3.NOOP_OBSERVABLE_UP_DOWN_COUNTER_METRIC = new k(), b3.createNoopMeter = function() {
+            return b3.NOOP_METER;
+          };
+        }, 660: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NOOP_METER_PROVIDER = b3.NoopMeterProvider = void 0;
+          let d2 = c2(102);
+          class e2 {
+            getMeter(a3, b4, c3) {
+              return d2.NOOP_METER;
+            }
+          }
+          b3.NoopMeterProvider = e2, b3.NOOP_METER_PROVIDER = new e2();
+        }, 200: function(a2, b3, c2) {
+          var d2 = this && this.__createBinding || (Object.create ? function(a3, b4, c3, d3) {
+            void 0 === d3 && (d3 = c3), Object.defineProperty(a3, d3, { enumerable: true, get: function() {
+              return b4[c3];
+            } });
+          } : function(a3, b4, c3, d3) {
+            void 0 === d3 && (d3 = c3), a3[d3] = b4[c3];
+          }), e2 = this && this.__exportStar || function(a3, b4) {
+            for (var c3 in a3) "default" === c3 || Object.prototype.hasOwnProperty.call(b4, c3) || d2(b4, a3, c3);
+          };
+          Object.defineProperty(b3, "__esModule", { value: true }), e2(c2(46), b3);
+        }, 651: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3._globalThis = void 0, b3._globalThis = "object" == typeof globalThis ? globalThis : c.g;
+        }, 46: function(a2, b3, c2) {
+          var d2 = this && this.__createBinding || (Object.create ? function(a3, b4, c3, d3) {
+            void 0 === d3 && (d3 = c3), Object.defineProperty(a3, d3, { enumerable: true, get: function() {
+              return b4[c3];
+            } });
+          } : function(a3, b4, c3, d3) {
+            void 0 === d3 && (d3 = c3), a3[d3] = b4[c3];
+          }), e2 = this && this.__exportStar || function(a3, b4) {
+            for (var c3 in a3) "default" === c3 || Object.prototype.hasOwnProperty.call(b4, c3) || d2(b4, a3, c3);
+          };
+          Object.defineProperty(b3, "__esModule", { value: true }), e2(c2(651), b3);
+        }, 939: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.propagation = void 0, b3.propagation = c2(181).PropagationAPI.getInstance();
+        }, 874: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTextMapPropagator = void 0;
+          class c2 {
+            inject(a3, b4) {
+            }
+            extract(a3, b4) {
+              return a3;
+            }
+            fields() {
+              return [];
+            }
+          }
+          b3.NoopTextMapPropagator = c2;
+        }, 194: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.defaultTextMapSetter = b3.defaultTextMapGetter = void 0, b3.defaultTextMapGetter = { get(a3, b4) {
+            if (null != a3) return a3[b4];
+          }, keys: (a3) => null == a3 ? [] : Object.keys(a3) }, b3.defaultTextMapSetter = { set(a3, b4, c2) {
+            null != a3 && (a3[b4] = c2);
+          } };
+        }, 845: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.trace = void 0, b3.trace = c2(997).TraceAPI.getInstance();
+        }, 403: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NonRecordingSpan = void 0;
+          let d2 = c2(476);
+          class e2 {
+            constructor(a3 = d2.INVALID_SPAN_CONTEXT) {
+              this._spanContext = a3;
+            }
+            spanContext() {
+              return this._spanContext;
+            }
+            setAttribute(a3, b4) {
+              return this;
+            }
+            setAttributes(a3) {
+              return this;
+            }
+            addEvent(a3, b4) {
+              return this;
+            }
+            setStatus(a3) {
+              return this;
+            }
+            updateName(a3) {
+              return this;
+            }
+            end(a3) {
+            }
+            isRecording() {
+              return false;
+            }
+            recordException(a3, b4) {
+            }
+          }
+          b3.NonRecordingSpan = e2;
+        }, 614: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTracer = void 0;
+          let d2 = c2(491), e2 = c2(607), f2 = c2(403), g = c2(139), h = d2.ContextAPI.getInstance();
+          class i {
+            startSpan(a3, b4, c3 = h.active()) {
+              var d3;
+              if (null == b4 ? void 0 : b4.root) return new f2.NonRecordingSpan();
+              let i2 = c3 && (0, e2.getSpanContext)(c3);
+              return "object" == typeof (d3 = i2) && "string" == typeof d3.spanId && "string" == typeof d3.traceId && "number" == typeof d3.traceFlags && (0, g.isSpanContextValid)(i2) ? new f2.NonRecordingSpan(i2) : new f2.NonRecordingSpan();
+            }
+            startActiveSpan(a3, b4, c3, d3) {
+              let f3, g2, i2;
+              if (arguments.length < 2) return;
+              2 == arguments.length ? i2 = b4 : 3 == arguments.length ? (f3 = b4, i2 = c3) : (f3 = b4, g2 = c3, i2 = d3);
+              let j = null != g2 ? g2 : h.active(), k = this.startSpan(a3, f3, j), l = (0, e2.setSpan)(j, k);
+              return h.with(l, i2, void 0, k);
+            }
+          }
+          b3.NoopTracer = i;
+        }, 124: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.NoopTracerProvider = void 0;
+          let d2 = c2(614);
+          class e2 {
+            getTracer(a3, b4, c3) {
+              return new d2.NoopTracer();
+            }
+          }
+          b3.NoopTracerProvider = e2;
+        }, 125: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.ProxyTracer = void 0;
+          let d2 = new (c2(614)).NoopTracer();
+          class e2 {
+            constructor(a3, b4, c3, d3) {
+              this._provider = a3, this.name = b4, this.version = c3, this.options = d3;
+            }
+            startSpan(a3, b4, c3) {
+              return this._getTracer().startSpan(a3, b4, c3);
+            }
+            startActiveSpan(a3, b4, c3, d3) {
+              let e3 = this._getTracer();
+              return Reflect.apply(e3.startActiveSpan, e3, arguments);
+            }
+            _getTracer() {
+              if (this._delegate) return this._delegate;
+              let a3 = this._provider.getDelegateTracer(this.name, this.version, this.options);
+              return a3 ? (this._delegate = a3, this._delegate) : d2;
+            }
+          }
+          b3.ProxyTracer = e2;
+        }, 846: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.ProxyTracerProvider = void 0;
+          let d2 = c2(125), e2 = new (c2(124)).NoopTracerProvider();
+          class f2 {
+            getTracer(a3, b4, c3) {
+              var e3;
+              return null != (e3 = this.getDelegateTracer(a3, b4, c3)) ? e3 : new d2.ProxyTracer(this, a3, b4, c3);
+            }
+            getDelegate() {
+              var a3;
+              return null != (a3 = this._delegate) ? a3 : e2;
+            }
+            setDelegate(a3) {
+              this._delegate = a3;
+            }
+            getDelegateTracer(a3, b4, c3) {
+              var d3;
+              return null == (d3 = this._delegate) ? void 0 : d3.getTracer(a3, b4, c3);
+            }
+          }
+          b3.ProxyTracerProvider = f2;
+        }, 996: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.SamplingDecision = void 0, function(a3) {
+            a3[a3.NOT_RECORD = 0] = "NOT_RECORD", a3[a3.RECORD = 1] = "RECORD", a3[a3.RECORD_AND_SAMPLED = 2] = "RECORD_AND_SAMPLED";
+          }(b3.SamplingDecision || (b3.SamplingDecision = {}));
+        }, 607: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.getSpanContext = b3.setSpanContext = b3.deleteSpan = b3.setSpan = b3.getActiveSpan = b3.getSpan = void 0;
+          let d2 = c2(780), e2 = c2(403), f2 = c2(491), g = (0, d2.createContextKey)("OpenTelemetry Context Key SPAN");
+          function h(a3) {
+            return a3.getValue(g) || void 0;
+          }
+          function i(a3, b4) {
+            return a3.setValue(g, b4);
+          }
+          b3.getSpan = h, b3.getActiveSpan = function() {
+            return h(f2.ContextAPI.getInstance().active());
+          }, b3.setSpan = i, b3.deleteSpan = function(a3) {
+            return a3.deleteValue(g);
+          }, b3.setSpanContext = function(a3, b4) {
+            return i(a3, new e2.NonRecordingSpan(b4));
+          }, b3.getSpanContext = function(a3) {
+            var b4;
+            return null == (b4 = h(a3)) ? void 0 : b4.spanContext();
+          };
+        }, 325: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceStateImpl = void 0;
+          let d2 = c2(564);
+          class e2 {
+            constructor(a3) {
+              this._internalState = /* @__PURE__ */ new Map(), a3 && this._parse(a3);
+            }
+            set(a3, b4) {
+              let c3 = this._clone();
+              return c3._internalState.has(a3) && c3._internalState.delete(a3), c3._internalState.set(a3, b4), c3;
+            }
+            unset(a3) {
+              let b4 = this._clone();
+              return b4._internalState.delete(a3), b4;
+            }
+            get(a3) {
+              return this._internalState.get(a3);
+            }
+            serialize() {
+              return this._keys().reduce((a3, b4) => (a3.push(b4 + "=" + this.get(b4)), a3), []).join(",");
+            }
+            _parse(a3) {
+              !(a3.length > 512) && (this._internalState = a3.split(",").reverse().reduce((a4, b4) => {
+                let c3 = b4.trim(), e3 = c3.indexOf("=");
+                if (-1 !== e3) {
+                  let f2 = c3.slice(0, e3), g = c3.slice(e3 + 1, b4.length);
+                  (0, d2.validateKey)(f2) && (0, d2.validateValue)(g) && a4.set(f2, g);
+                }
+                return a4;
+              }, /* @__PURE__ */ new Map()), this._internalState.size > 32 && (this._internalState = new Map(Array.from(this._internalState.entries()).reverse().slice(0, 32))));
+            }
+            _keys() {
+              return Array.from(this._internalState.keys()).reverse();
+            }
+            _clone() {
+              let a3 = new e2();
+              return a3._internalState = new Map(this._internalState), a3;
+            }
+          }
+          b3.TraceStateImpl = e2;
+        }, 564: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.validateValue = b3.validateKey = void 0;
+          let c2 = "[_0-9a-z-*/]", d2 = `[a-z]${c2}{0,255}`, e2 = `[a-z0-9]${c2}{0,240}@[a-z]${c2}{0,13}`, f2 = RegExp(`^(?:${d2}|${e2})$`), g = /^[ -~]{0,255}[!-~]$/, h = /,|=/;
+          b3.validateKey = function(a3) {
+            return f2.test(a3);
+          }, b3.validateValue = function(a3) {
+            return g.test(a3) && !h.test(a3);
+          };
+        }, 98: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.createTraceState = void 0;
+          let d2 = c2(325);
+          b3.createTraceState = function(a3) {
+            return new d2.TraceStateImpl(a3);
+          };
+        }, 476: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.INVALID_SPAN_CONTEXT = b3.INVALID_TRACEID = b3.INVALID_SPANID = void 0;
+          let d2 = c2(475);
+          b3.INVALID_SPANID = "0000000000000000", b3.INVALID_TRACEID = "00000000000000000000000000000000", b3.INVALID_SPAN_CONTEXT = { traceId: b3.INVALID_TRACEID, spanId: b3.INVALID_SPANID, traceFlags: d2.TraceFlags.NONE };
+        }, 357: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.SpanKind = void 0, function(a3) {
+            a3[a3.INTERNAL = 0] = "INTERNAL", a3[a3.SERVER = 1] = "SERVER", a3[a3.CLIENT = 2] = "CLIENT", a3[a3.PRODUCER = 3] = "PRODUCER", a3[a3.CONSUMER = 4] = "CONSUMER";
+          }(b3.SpanKind || (b3.SpanKind = {}));
+        }, 139: (a2, b3, c2) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.wrapSpanContext = b3.isSpanContextValid = b3.isValidSpanId = b3.isValidTraceId = void 0;
+          let d2 = c2(476), e2 = c2(403), f2 = /^([0-9a-f]{32})$/i, g = /^[0-9a-f]{16}$/i;
+          function h(a3) {
+            return f2.test(a3) && a3 !== d2.INVALID_TRACEID;
+          }
+          function i(a3) {
+            return g.test(a3) && a3 !== d2.INVALID_SPANID;
+          }
+          b3.isValidTraceId = h, b3.isValidSpanId = i, b3.isSpanContextValid = function(a3) {
+            return h(a3.traceId) && i(a3.spanId);
+          }, b3.wrapSpanContext = function(a3) {
+            return new e2.NonRecordingSpan(a3);
+          };
+        }, 847: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.SpanStatusCode = void 0, function(a3) {
+            a3[a3.UNSET = 0] = "UNSET", a3[a3.OK = 1] = "OK", a3[a3.ERROR = 2] = "ERROR";
+          }(b3.SpanStatusCode || (b3.SpanStatusCode = {}));
+        }, 475: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.TraceFlags = void 0, function(a3) {
+            a3[a3.NONE = 0] = "NONE", a3[a3.SAMPLED = 1] = "SAMPLED";
+          }(b3.TraceFlags || (b3.TraceFlags = {}));
+        }, 521: (a2, b3) => {
+          Object.defineProperty(b3, "__esModule", { value: true }), b3.VERSION = void 0, b3.VERSION = "1.6.0";
+        } }, d = {};
+        function e(a2) {
+          var c2 = d[a2];
+          if (void 0 !== c2) return c2.exports;
+          var f2 = d[a2] = { exports: {} }, g = true;
+          try {
+            b2[a2].call(f2.exports, f2, f2.exports, e), g = false;
+          } finally {
+            g && delete d[a2];
+          }
+          return f2.exports;
+        }
+        e.ab = "//";
+        var f = {};
+        (() => {
+          Object.defineProperty(f, "__esModule", { value: true }), f.trace = f.propagation = f.metrics = f.diag = f.context = f.INVALID_SPAN_CONTEXT = f.INVALID_TRACEID = f.INVALID_SPANID = f.isValidSpanId = f.isValidTraceId = f.isSpanContextValid = f.createTraceState = f.TraceFlags = f.SpanStatusCode = f.SpanKind = f.SamplingDecision = f.ProxyTracerProvider = f.ProxyTracer = f.defaultTextMapSetter = f.defaultTextMapGetter = f.ValueType = f.createNoopMeter = f.DiagLogLevel = f.DiagConsoleLogger = f.ROOT_CONTEXT = f.createContextKey = f.baggageEntryMetadataFromString = void 0;
+          var a2 = e(369);
+          Object.defineProperty(f, "baggageEntryMetadataFromString", { enumerable: true, get: function() {
+            return a2.baggageEntryMetadataFromString;
+          } });
+          var b3 = e(780);
+          Object.defineProperty(f, "createContextKey", { enumerable: true, get: function() {
+            return b3.createContextKey;
+          } }), Object.defineProperty(f, "ROOT_CONTEXT", { enumerable: true, get: function() {
+            return b3.ROOT_CONTEXT;
+          } });
+          var c2 = e(972);
+          Object.defineProperty(f, "DiagConsoleLogger", { enumerable: true, get: function() {
+            return c2.DiagConsoleLogger;
+          } });
+          var d2 = e(957);
+          Object.defineProperty(f, "DiagLogLevel", { enumerable: true, get: function() {
+            return d2.DiagLogLevel;
+          } });
+          var g = e(102);
+          Object.defineProperty(f, "createNoopMeter", { enumerable: true, get: function() {
+            return g.createNoopMeter;
+          } });
+          var h = e(901);
+          Object.defineProperty(f, "ValueType", { enumerable: true, get: function() {
+            return h.ValueType;
+          } });
+          var i = e(194);
+          Object.defineProperty(f, "defaultTextMapGetter", { enumerable: true, get: function() {
+            return i.defaultTextMapGetter;
+          } }), Object.defineProperty(f, "defaultTextMapSetter", { enumerable: true, get: function() {
+            return i.defaultTextMapSetter;
+          } });
+          var j = e(125);
+          Object.defineProperty(f, "ProxyTracer", { enumerable: true, get: function() {
+            return j.ProxyTracer;
+          } });
+          var k = e(846);
+          Object.defineProperty(f, "ProxyTracerProvider", { enumerable: true, get: function() {
+            return k.ProxyTracerProvider;
+          } });
+          var l = e(996);
+          Object.defineProperty(f, "SamplingDecision", { enumerable: true, get: function() {
+            return l.SamplingDecision;
+          } });
+          var m = e(357);
+          Object.defineProperty(f, "SpanKind", { enumerable: true, get: function() {
+            return m.SpanKind;
+          } });
+          var n = e(847);
+          Object.defineProperty(f, "SpanStatusCode", { enumerable: true, get: function() {
+            return n.SpanStatusCode;
+          } });
+          var o = e(475);
+          Object.defineProperty(f, "TraceFlags", { enumerable: true, get: function() {
+            return o.TraceFlags;
+          } });
+          var p = e(98);
+          Object.defineProperty(f, "createTraceState", { enumerable: true, get: function() {
+            return p.createTraceState;
+          } });
+          var q = e(139);
+          Object.defineProperty(f, "isSpanContextValid", { enumerable: true, get: function() {
+            return q.isSpanContextValid;
+          } }), Object.defineProperty(f, "isValidTraceId", { enumerable: true, get: function() {
+            return q.isValidTraceId;
+          } }), Object.defineProperty(f, "isValidSpanId", { enumerable: true, get: function() {
+            return q.isValidSpanId;
+          } });
+          var r = e(476);
+          Object.defineProperty(f, "INVALID_SPANID", { enumerable: true, get: function() {
+            return r.INVALID_SPANID;
+          } }), Object.defineProperty(f, "INVALID_TRACEID", { enumerable: true, get: function() {
+            return r.INVALID_TRACEID;
+          } }), Object.defineProperty(f, "INVALID_SPAN_CONTEXT", { enumerable: true, get: function() {
+            return r.INVALID_SPAN_CONTEXT;
+          } });
+          let s = e(67);
+          Object.defineProperty(f, "context", { enumerable: true, get: function() {
+            return s.context;
+          } });
+          let t = e(506);
+          Object.defineProperty(f, "diag", { enumerable: true, get: function() {
+            return t.diag;
+          } });
+          let u = e(886);
+          Object.defineProperty(f, "metrics", { enumerable: true, get: function() {
+            return u.metrics;
+          } });
+          let v = e(939);
+          Object.defineProperty(f, "propagation", { enumerable: true, get: function() {
+            return v.propagation;
+          } });
+          let w = e(845);
+          Object.defineProperty(f, "trace", { enumerable: true, get: function() {
+            return w.trace;
+          } }), f.default = { context: s.context, diag: t.diag, metrics: u.metrics, propagation: v.propagation, trace: w.trace };
+        })(), a.exports = f;
+      })();
     } }, (a) => {
-      var b = a(a.s = 925);
+      var b = a(a.s = 613);
       (_ENTRIES = "undefined" == typeof _ENTRIES ? {} : _ENTRIES).middleware_middleware = b;
     }]);
   }
@@ -3740,13 +3740,13 @@ globalThis.__dirname ??= "";
 var NEXT_DIR = path.join(__dirname, ".next");
 var OPEN_NEXT_DIR = path.join(__dirname, ".open-next");
 debug({ NEXT_DIR, OPEN_NEXT_DIR });
-var NextConfig = { "env": {}, "webpack": null, "eslint": { "ignoreDuringBuilds": false }, "typescript": { "ignoreBuildErrors": false, "tsconfigPath": "tsconfig.json" }, "typedRoutes": false, "distDir": ".next", "cleanDistDir": true, "assetPrefix": "", "cacheMaxMemorySize": 52428800, "configOrigin": "next.config.mjs", "useFileSystemPublicRoutes": true, "generateEtags": true, "pageExtensions": ["tsx", "ts", "jsx", "js"], "poweredByHeader": true, "compress": true, "images": { "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840], "imageSizes": [16, 32, 48, 64, 96, 128, 256, 384], "path": "/_next/image", "loader": "default", "loaderFile": "", "domains": [], "disableStaticImages": false, "minimumCacheTTL": 60, "formats": ["image/webp"], "maximumResponseBody": 5e7, "dangerouslyAllowSVG": false, "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;", "contentDispositionType": "attachment", "remotePatterns": [{ "protocol": "https", "hostname": "*.r2.dev" }], "unoptimized": false }, "devIndicators": { "position": "bottom-left" }, "onDemandEntries": { "maxInactiveAge": 6e4, "pagesBufferLength": 5 }, "amp": { "canonicalBase": "" }, "basePath": "", "sassOptions": {}, "trailingSlash": false, "i18n": null, "productionBrowserSourceMaps": false, "excludeDefaultMomentLocales": true, "serverRuntimeConfig": {}, "publicRuntimeConfig": {}, "reactProductionProfiling": false, "reactStrictMode": null, "reactMaxHeadersLength": 6e3, "httpAgentOptions": { "keepAlive": true }, "logging": {}, "compiler": {}, "expireTime": 31536e3, "staticPageGenerationTimeout": 60, "output": "standalone", "modularizeImports": { "@mui/icons-material": { "transform": "@mui/icons-material/{{member}}" }, "lodash": { "transform": "lodash/{{member}}" } }, "outputFileTracingRoot": "C:\\src\\gtscoursenligne", "experimental": { "useSkewCookie": false, "cacheLife": { "default": { "stale": 300, "revalidate": 900, "expire": 4294967294 }, "seconds": { "stale": 30, "revalidate": 1, "expire": 60 }, "minutes": { "stale": 300, "revalidate": 60, "expire": 3600 }, "hours": { "stale": 300, "revalidate": 3600, "expire": 86400 }, "days": { "stale": 300, "revalidate": 86400, "expire": 604800 }, "weeks": { "stale": 300, "revalidate": 604800, "expire": 2592e3 }, "max": { "stale": 300, "revalidate": 2592e3, "expire": 4294967294 } }, "cacheHandlers": {}, "cssChunking": true, "multiZoneDraftMode": false, "appNavFailHandling": false, "prerenderEarlyExit": true, "serverMinification": true, "serverSourceMaps": false, "linkNoTouchStart": false, "caseSensitiveRoutes": false, "clientSegmentCache": false, "clientParamParsing": false, "dynamicOnHover": false, "preloadEntriesOnStart": true, "clientRouterFilter": true, "clientRouterFilterRedirects": false, "fetchCacheKeyPrefix": "", "middlewarePrefetch": "flexible", "optimisticClientCache": true, "manualClientBasePath": false, "cpus": 7, "memoryBasedWorkersCount": false, "imgOptConcurrency": null, "imgOptTimeoutInSeconds": 7, "imgOptMaxInputPixels": 268402689, "imgOptSequentialRead": null, "isrFlushToDisk": true, "workerThreads": false, "optimizeCss": false, "nextScriptWorkers": false, "scrollRestoration": false, "externalDir": false, "disableOptimizedLoading": false, "gzipSize": true, "craCompat": false, "esmExternals": true, "fullySpecified": false, "swcTraceProfiling": false, "forceSwcTransforms": false, "largePageDataBytes": 128e3, "typedEnv": false, "parallelServerCompiles": false, "parallelServerBuildTraces": false, "ppr": false, "authInterrupts": false, "webpackMemoryOptimizations": false, "optimizeServerReact": true, "viewTransition": false, "routerBFCache": false, "removeUncaughtErrorAndRejectionListeners": false, "validateRSCRequestHeaders": false, "staleTimes": { "dynamic": 0, "static": 300 }, "serverComponentsHmrCache": true, "staticGenerationMaxConcurrency": 8, "staticGenerationMinPagesPerWorker": 25, "cacheComponents": false, "inlineCss": false, "useCache": false, "globalNotFound": false, "devtoolSegmentExplorer": true, "browserDebugInfoInTerminal": false, "optimizeRouterScrolling": false, "middlewareClientMaxBodySize": 10485760, "optimizePackageImports": ["lucide-react", "date-fns", "lodash-es", "ramda", "antd", "react-bootstrap", "ahooks", "@ant-design/icons", "@headlessui/react", "@headlessui-float/react", "@heroicons/react/20/solid", "@heroicons/react/24/solid", "@heroicons/react/24/outline", "@visx/visx", "@tremor/react", "rxjs", "@mui/material", "@mui/icons-material", "recharts", "react-use", "effect", "@effect/schema", "@effect/platform", "@effect/platform-node", "@effect/platform-browser", "@effect/platform-bun", "@effect/sql", "@effect/sql-mssql", "@effect/sql-mysql2", "@effect/sql-pg", "@effect/sql-sqlite-node", "@effect/sql-sqlite-bun", "@effect/sql-sqlite-wasm", "@effect/sql-sqlite-react-native", "@effect/rpc", "@effect/rpc-http", "@effect/typeclass", "@effect/experimental", "@effect/opentelemetry", "@material-ui/core", "@material-ui/icons", "@tabler/icons-react", "mui-core", "react-icons/ai", "react-icons/bi", "react-icons/bs", "react-icons/cg", "react-icons/ci", "react-icons/di", "react-icons/fa", "react-icons/fa6", "react-icons/fc", "react-icons/fi", "react-icons/gi", "react-icons/go", "react-icons/gr", "react-icons/hi", "react-icons/hi2", "react-icons/im", "react-icons/io", "react-icons/io5", "react-icons/lia", "react-icons/lib", "react-icons/lu", "react-icons/md", "react-icons/pi", "react-icons/ri", "react-icons/rx", "react-icons/si", "react-icons/sl", "react-icons/tb", "react-icons/tfi", "react-icons/ti", "react-icons/vsc", "react-icons/wi"], "trustHostHeader": false, "isExperimentalCompile": false }, "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight", "bundlePagesRouterDependencies": false, "configFileName": "next.config.mjs", "turbopack": { "root": "C:\\src\\gtscoursenligne" } };
-var BuildId = "jsW_XKysgiGjhiMwlN7Ni";
+var NextConfig = { "env": {}, "webpack": null, "eslint": { "ignoreDuringBuilds": false }, "typescript": { "ignoreBuildErrors": false, "tsconfigPath": "tsconfig.json" }, "typedRoutes": false, "distDir": ".next", "cleanDistDir": true, "assetPrefix": "", "cacheMaxMemorySize": 52428800, "configOrigin": "next.config.mjs", "useFileSystemPublicRoutes": true, "generateEtags": true, "pageExtensions": ["tsx", "ts", "jsx", "js"], "poweredByHeader": true, "compress": true, "images": { "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840], "imageSizes": [16, 32, 48, 64, 96, 128, 256, 384], "path": "/_next/image", "loader": "default", "loaderFile": "", "domains": [], "disableStaticImages": false, "minimumCacheTTL": 60, "formats": ["image/webp"], "maximumResponseBody": 5e7, "dangerouslyAllowSVG": false, "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;", "contentDispositionType": "attachment", "remotePatterns": [{ "protocol": "https", "hostname": "*.r2.dev" }], "unoptimized": false }, "devIndicators": { "position": "bottom-left" }, "onDemandEntries": { "maxInactiveAge": 6e4, "pagesBufferLength": 5 }, "amp": { "canonicalBase": "" }, "basePath": "", "sassOptions": {}, "trailingSlash": false, "i18n": null, "productionBrowserSourceMaps": false, "excludeDefaultMomentLocales": true, "serverRuntimeConfig": {}, "publicRuntimeConfig": {}, "reactProductionProfiling": false, "reactStrictMode": null, "reactMaxHeadersLength": 6e3, "httpAgentOptions": { "keepAlive": true }, "logging": {}, "compiler": {}, "expireTime": 31536e3, "staticPageGenerationTimeout": 60, "output": "standalone", "modularizeImports": { "@mui/icons-material": { "transform": "@mui/icons-material/{{member}}" }, "lodash": { "transform": "lodash/{{member}}" } }, "outputFileTracingRoot": "C:\\src\\mes projets\\gtscoursenligne", "experimental": { "useSkewCookie": false, "cacheLife": { "default": { "stale": 300, "revalidate": 900, "expire": 4294967294 }, "seconds": { "stale": 30, "revalidate": 1, "expire": 60 }, "minutes": { "stale": 300, "revalidate": 60, "expire": 3600 }, "hours": { "stale": 300, "revalidate": 3600, "expire": 86400 }, "days": { "stale": 300, "revalidate": 86400, "expire": 604800 }, "weeks": { "stale": 300, "revalidate": 604800, "expire": 2592e3 }, "max": { "stale": 300, "revalidate": 2592e3, "expire": 4294967294 } }, "cacheHandlers": {}, "cssChunking": true, "multiZoneDraftMode": false, "appNavFailHandling": false, "prerenderEarlyExit": true, "serverMinification": true, "serverSourceMaps": false, "linkNoTouchStart": false, "caseSensitiveRoutes": false, "clientSegmentCache": false, "clientParamParsing": false, "dynamicOnHover": false, "preloadEntriesOnStart": true, "clientRouterFilter": true, "clientRouterFilterRedirects": false, "fetchCacheKeyPrefix": "", "middlewarePrefetch": "flexible", "optimisticClientCache": true, "manualClientBasePath": false, "cpus": 7, "memoryBasedWorkersCount": false, "imgOptConcurrency": null, "imgOptTimeoutInSeconds": 7, "imgOptMaxInputPixels": 268402689, "imgOptSequentialRead": null, "isrFlushToDisk": true, "workerThreads": false, "optimizeCss": false, "nextScriptWorkers": false, "scrollRestoration": false, "externalDir": false, "disableOptimizedLoading": false, "gzipSize": true, "craCompat": false, "esmExternals": true, "fullySpecified": false, "swcTraceProfiling": false, "forceSwcTransforms": false, "largePageDataBytes": 128e3, "typedEnv": false, "parallelServerCompiles": false, "parallelServerBuildTraces": false, "ppr": false, "authInterrupts": false, "webpackMemoryOptimizations": false, "optimizeServerReact": true, "viewTransition": false, "routerBFCache": false, "removeUncaughtErrorAndRejectionListeners": false, "validateRSCRequestHeaders": false, "staleTimes": { "dynamic": 0, "static": 300 }, "serverComponentsHmrCache": true, "staticGenerationMaxConcurrency": 8, "staticGenerationMinPagesPerWorker": 25, "cacheComponents": false, "inlineCss": false, "useCache": false, "globalNotFound": false, "devtoolSegmentExplorer": true, "browserDebugInfoInTerminal": false, "optimizeRouterScrolling": false, "middlewareClientMaxBodySize": 10485760, "optimizePackageImports": ["lucide-react", "date-fns", "lodash-es", "ramda", "antd", "react-bootstrap", "ahooks", "@ant-design/icons", "@headlessui/react", "@headlessui-float/react", "@heroicons/react/20/solid", "@heroicons/react/24/solid", "@heroicons/react/24/outline", "@visx/visx", "@tremor/react", "rxjs", "@mui/material", "@mui/icons-material", "recharts", "react-use", "effect", "@effect/schema", "@effect/platform", "@effect/platform-node", "@effect/platform-browser", "@effect/platform-bun", "@effect/sql", "@effect/sql-mssql", "@effect/sql-mysql2", "@effect/sql-pg", "@effect/sql-sqlite-node", "@effect/sql-sqlite-bun", "@effect/sql-sqlite-wasm", "@effect/sql-sqlite-react-native", "@effect/rpc", "@effect/rpc-http", "@effect/typeclass", "@effect/experimental", "@effect/opentelemetry", "@material-ui/core", "@material-ui/icons", "@tabler/icons-react", "mui-core", "react-icons/ai", "react-icons/bi", "react-icons/bs", "react-icons/cg", "react-icons/ci", "react-icons/di", "react-icons/fa", "react-icons/fa6", "react-icons/fc", "react-icons/fi", "react-icons/gi", "react-icons/go", "react-icons/gr", "react-icons/hi", "react-icons/hi2", "react-icons/im", "react-icons/io", "react-icons/io5", "react-icons/lia", "react-icons/lib", "react-icons/lu", "react-icons/md", "react-icons/pi", "react-icons/ri", "react-icons/rx", "react-icons/si", "react-icons/sl", "react-icons/tb", "react-icons/tfi", "react-icons/ti", "react-icons/vsc", "react-icons/wi"], "trustHostHeader": false, "isExperimentalCompile": false }, "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight", "bundlePagesRouterDependencies": false, "configFileName": "next.config.mjs", "turbopack": { "root": "C:\\src\\mes projets\\gtscoursenligne" } };
+var BuildId = "abe8lejyX9Wxll94WUGx5";
 var RoutesManifest = { "basePath": "", "rewrites": { "beforeFiles": [], "afterFiles": [], "fallback": [] }, "redirects": [{ "source": "/:path+/", "destination": "/:path+", "internal": true, "statusCode": 308, "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$" }], "routes": { "static": [{ "page": "/", "regex": "^/(?:/)?$", "routeKeys": {}, "namedRegex": "^/(?:/)?$" }, { "page": "/_not-found", "regex": "^/_not\\-found(?:/)?$", "routeKeys": {}, "namedRegex": "^/_not\\-found(?:/)?$" }, { "page": "/admin", "regex": "^/admin(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin(?:/)?$" }, { "page": "/blog", "regex": "^/blog(?:/)?$", "routeKeys": {}, "namedRegex": "^/blog(?:/)?$" }, { "page": "/contact", "regex": "^/contact(?:/)?$", "routeKeys": {}, "namedRegex": "^/contact(?:/)?$" }, { "page": "/icon.png", "regex": "^/icon\\.png(?:/)?$", "routeKeys": {}, "namedRegex": "^/icon\\.png(?:/)?$" }, { "page": "/professeurs", "regex": "^/professeurs(?:/)?$", "routeKeys": {}, "namedRegex": "^/professeurs(?:/)?$" }, { "page": "/robots.txt", "regex": "^/robots\\.txt(?:/)?$", "routeKeys": {}, "namedRegex": "^/robots\\.txt(?:/)?$" }, { "page": "/series", "regex": "^/series(?:/)?$", "routeKeys": {}, "namedRegex": "^/series(?:/)?$" }, { "page": "/sitemap.xml", "regex": "^/sitemap\\.xml(?:/)?$", "routeKeys": {}, "namedRegex": "^/sitemap\\.xml(?:/)?$" }], "dynamic": [{ "page": "/blog/[slug]", "regex": "^/blog/([^/]+?)(?:/)?$", "routeKeys": { "nxtPslug": "nxtPslug" }, "namedRegex": "^/blog/(?<nxtPslug>[^/]+?)(?:/)?$" }, { "page": "/series/[niveau]", "regex": "^/series/([^/]+?)(?:/)?$", "routeKeys": { "nxtPniveau": "nxtPniveau" }, "namedRegex": "^/series/(?<nxtPniveau>[^/]+?)(?:/)?$" }, { "page": "/series/[niveau]/[matiere]", "regex": "^/series/([^/]+?)/([^/]+?)(?:/)?$", "routeKeys": { "nxtPniveau": "nxtPniveau", "nxtPmatiere": "nxtPmatiere" }, "namedRegex": "^/series/(?<nxtPniveau>[^/]+?)/(?<nxtPmatiere>[^/]+?)(?:/)?$" }, { "page": "/series/[niveau]/[matiere]/[serie]", "regex": "^/series/([^/]+?)/([^/]+?)/([^/]+?)(?:/)?$", "routeKeys": { "nxtPniveau": "nxtPniveau", "nxtPmatiere": "nxtPmatiere", "nxtPserie": "nxtPserie" }, "namedRegex": "^/series/(?<nxtPniveau>[^/]+?)/(?<nxtPmatiere>[^/]+?)/(?<nxtPserie>[^/]+?)(?:/)?$" }], "data": { "static": [], "dynamic": [] } }, "locales": [] };
 var ConfigHeaders = [];
-var PrerenderManifest = { "version": 4, "routes": { "/icon.png": { "initialHeaders": { "cache-control": "public, immutable, no-transform, max-age=31536000", "content-type": "image/png", "x-next-cache-tags": "_N_T_/layout,_N_T_/icon.png/layout,_N_T_/icon.png/route,_N_T_/icon.png" }, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/icon.png", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/robots.txt": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "text/plain", "x-next-cache-tags": "_N_T_/layout,_N_T_/robots.txt/layout,_N_T_/robots.txt/route,_N_T_/robots.txt" }, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/robots.txt", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/professeurs": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/professeurs", "dataRoute": "/professeurs.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_not-found": { "initialStatus": 404, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_not-found", "dataRoute": "/_not-found.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/admin": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/admin", "dataRoute": "/admin.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series", "dataRoute": "/series.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/premiere-s1": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/premiere-s1.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/premiere-s2": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/premiere-s2.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/seconde-s": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/seconde-s.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/terminale-s1": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/terminale-s1.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/terminale-s2": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/terminale-s2.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/contact": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/contact", "dataRoute": "/contact.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/concours-esp-ept-conseils": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/concours-esp-ept-conseils.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/erreurs-maths-bac": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/erreurs-maths-bac.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/preparer-rentree-terminale-s": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/preparer-rentree-terminale-s.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog", "dataRoute": "/blog.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": { "/series/[niveau]": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/series/([^/]+?)(?:/)?$", "dataRoute": "/series/[niveau].rsc", "fallback": null, "dataRouteRegex": "^/series/([^/]+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/[slug]": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/blog/([^/]+?)(?:/)?$", "dataRoute": "/blog/[slug].rsc", "fallback": null, "dataRouteRegex": "^/blog/([^/]+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "notFoundRoutes": [], "preview": { "previewModeId": "8270652837544df96e67ae99849c57de", "previewModeSigningKey": "cf5aa8a26c4ff769244ab2932999864dfe2b84f065cf3a7820ec4ef3676e0291", "previewModeEncryptionKey": "42a80cc8d78632fbc6fdcb2fa76cac737acc1a24c05f7a3e764607d327e7e95a" } };
-var MiddlewareManifest = { "version": 3, "middleware": { "/": { "files": ["server/edge-runtime-webpack.js", "server/middleware.js"], "name": "middleware", "page": "/", "matchers": [{ "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/admin(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/admin/:path*" }, { "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api\\/upload(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/api/upload" }, { "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api\\/series(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/api/series" }], "wasm": [], "assets": [], "env": { "__NEXT_BUILD_ID": "jsW_XKysgiGjhiMwlN7Ni", "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "UBykNGsDuEDSm6ng+cDHGD8UJ2kWyM//V0gzikZxABs=", "__NEXT_PREVIEW_MODE_ID": "8270652837544df96e67ae99849c57de", "__NEXT_PREVIEW_MODE_SIGNING_KEY": "cf5aa8a26c4ff769244ab2932999864dfe2b84f065cf3a7820ec4ef3676e0291", "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "42a80cc8d78632fbc6fdcb2fa76cac737acc1a24c05f7a3e764607d327e7e95a" } } }, "functions": {}, "sortedMiddleware": ["/"] };
-var AppPathRoutesManifest = { "/_not-found/page": "/_not-found", "/api/series/route": "/api/series", "/api/upload/route": "/api/upload", "/robots.txt/route": "/robots.txt", "/icon.png/route": "/icon.png", "/sitemap.xml/route": "/sitemap.xml", "/admin/page": "/admin", "/page": "/", "/blog/[slug]/page": "/blog/[slug]", "/blog/page": "/blog", "/series/[niveau]/[matiere]/page": "/series/[niveau]/[matiere]", "/series/page": "/series", "/contact/page": "/contact", "/series/[niveau]/page": "/series/[niveau]", "/professeurs/page": "/professeurs", "/series/[niveau]/[matiere]/[serie]/page": "/series/[niveau]/[matiere]/[serie]" };
+var PrerenderManifest = { "version": 4, "routes": { "/icon.png": { "initialHeaders": { "cache-control": "public, immutable, no-transform, max-age=31536000", "content-type": "image/png", "x-next-cache-tags": "_N_T_/layout,_N_T_/icon.png/layout,_N_T_/icon.png/route,_N_T_/icon.png" }, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/icon.png", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/robots.txt": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "text/plain", "x-next-cache-tags": "_N_T_/layout,_N_T_/robots.txt/layout,_N_T_/robots.txt/route,_N_T_/robots.txt" }, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/robots.txt", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/professeurs": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/professeurs", "dataRoute": "/professeurs.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/contact": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/contact", "dataRoute": "/contact.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/admin": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/admin", "dataRoute": "/admin.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/premiere-s1": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/premiere-s1.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/premiere-s2": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/premiere-s2.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/seconde-s": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/seconde-s.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/terminale-s1": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/terminale-s1.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series/terminale-s2": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series/[niveau]", "dataRoute": "/series/terminale-s2.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_not-found": { "initialStatus": 404, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_not-found", "dataRoute": "/_not-found.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/series": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/series", "dataRoute": "/series.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog", "dataRoute": "/blog.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/concours-esp-ept-conseils": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/concours-esp-ept-conseils.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/erreurs-maths-bac": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/erreurs-maths-bac.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/preparer-rentree-terminale-s": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[slug]", "dataRoute": "/blog/preparer-rentree-terminale-s.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": { "/series/[niveau]": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/series/([^/]+?)(?:/)?$", "dataRoute": "/series/[niveau].rsc", "fallback": null, "dataRouteRegex": "^/series/([^/]+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/[slug]": { "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/blog/([^/]+?)(?:/)?$", "dataRoute": "/blog/[slug].rsc", "fallback": null, "dataRouteRegex": "^/blog/([^/]+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "notFoundRoutes": [], "preview": { "previewModeId": "96529efddb3b9bdb824c451d8e101acb", "previewModeSigningKey": "831bb1f22260c01918d49844536bd24d673083a09739730a036279c4b970ad99", "previewModeEncryptionKey": "0ee59b1495f58d593d2a82dae057b91db902237c56ecf4bec12b78078a576561" } };
+var MiddlewareManifest = { "version": 3, "middleware": { "/": { "files": ["server/edge-runtime-webpack.js", "server/middleware.js"], "name": "middleware", "page": "/", "matchers": [{ "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/admin(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/admin/:path*" }, { "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api\\/upload(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/api/upload" }, { "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/api\\/series(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/api/series" }], "wasm": [], "assets": [], "env": { "__NEXT_BUILD_ID": "abe8lejyX9Wxll94WUGx5", "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o1+vpt9XYovVlamxJSSiON5HspvwUnaxBmk+FGMGNiM=", "__NEXT_PREVIEW_MODE_ID": "96529efddb3b9bdb824c451d8e101acb", "__NEXT_PREVIEW_MODE_SIGNING_KEY": "831bb1f22260c01918d49844536bd24d673083a09739730a036279c4b970ad99", "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0ee59b1495f58d593d2a82dae057b91db902237c56ecf4bec12b78078a576561" } } }, "functions": {}, "sortedMiddleware": ["/"] };
+var AppPathRoutesManifest = { "/api/upload/route": "/api/upload", "/_not-found/page": "/_not-found", "/api/series/route": "/api/series", "/robots.txt/route": "/robots.txt", "/icon.png/route": "/icon.png", "/sitemap.xml/route": "/sitemap.xml", "/admin/page": "/admin", "/page": "/", "/blog/[slug]/page": "/blog/[slug]", "/contact/page": "/contact", "/blog/page": "/blog", "/series/[niveau]/[matiere]/page": "/series/[niveau]/[matiere]", "/series/[niveau]/page": "/series/[niveau]", "/professeurs/page": "/professeurs", "/series/page": "/series", "/series/[niveau]/[matiere]/[serie]/page": "/series/[niveau]/[matiere]/[serie]" };
 var FunctionsConfigManifest = { "version": 1, "functions": {} };
 var PagesManifest = { "/_app": "pages/_app.js", "/_error": "pages/_error.js", "/_document": "pages/_document.js", "/404": "pages/404.html" };
 process.env.NEXT_BUILD_ID = BuildId;
