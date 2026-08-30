@@ -25,7 +25,7 @@ export default function SeriesCard({
   const hasCorrigeTexte = !!serie.corrigeExemple.texte;
 
   return (
-    <div className="fiche-serie group relative flex flex-col rounded-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+    <div className="fiche-serie group relative flex flex-col rounded-2xl bg-white/[0.02] border border-white/10 hover:-translate-y-1 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300 overflow-hidden">
       {/* Blue accent bar */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-azur to-azur/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -39,10 +39,10 @@ export default function SeriesCard({
         </div>
 
         <Link href={detailHref} className="block group/title">
-          <h3 className="font-display text-lg text-encre mb-1 group-hover/title:text-azur transition-colors duration-200">
+          <h3 className="font-display text-lg text-white mb-1 group-hover/title:text-solaire transition-colors duration-200">
             <HighlightText text={serie.titre} highlight={highlightTerm} />
           </h3>
-          <p className="font-body text-sm text-ardoise leading-relaxed line-clamp-3">
+          <p className="font-body text-sm text-white/60 leading-relaxed line-clamp-3">
             <HighlightText text={serie.resume} highlight={highlightTerm} />
           </p>
         </Link>
@@ -53,7 +53,7 @@ export default function SeriesCard({
       </div>
 
       {/* Action buttons — direct PDF access */}
-      <div className="border-t border-encre/5 p-4 pt-3 flex flex-col gap-2">
+      <div className="border-t border-white/10 p-4 pt-3 flex flex-col gap-2">
         {/* PDF buttons row */}
         <div className="flex gap-2">
           {hasEnoncePdf ? (
@@ -106,7 +106,7 @@ export default function SeriesCard({
               </span>
             </Link>
           ) : (
-            <span className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-encre/5 text-ardoise/50 text-xs font-body rounded-lg cursor-not-allowed">
+            <span className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white/5 text-white/40 text-xs font-body rounded-lg cursor-not-allowed">
               <svg
                 className="w-4 h-4"
                 viewBox="0 0 24 24"
@@ -127,7 +127,7 @@ export default function SeriesCard({
             <VisionneusePdf
               url={serie.corrigeExemple.fichierUrl!}
               titre={`Corrigé — ${serie.titre}`}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-encre text-craie text-xs font-body font-semibold rounded-lg hover:bg-encre/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-solaire focus:ring-offset-1"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-solaire text-encre text-xs font-body font-semibold rounded-lg hover:bg-solaire/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1"
             >
               <span className="flex items-center gap-1.5">
                 <svg
@@ -148,7 +148,7 @@ export default function SeriesCard({
           ) : hasCorrigeTexte ? (
             <Link
               href={detailHref}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-encre text-craie text-xs font-body font-semibold rounded-lg hover:bg-encre/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-solaire focus:ring-offset-1"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-solaire text-encre text-xs font-body font-semibold rounded-lg hover:bg-solaire/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1"
             >
               <span className="flex items-center gap-1.5">
                 <svg
@@ -167,7 +167,7 @@ export default function SeriesCard({
               </span>
             </Link>
           ) : (
-            <span className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-encre/5 text-ardoise/50 text-xs font-body rounded-lg cursor-not-allowed">
+            <span className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white/5 text-white/40 text-xs font-body rounded-lg cursor-not-allowed">
               <svg
                 className="w-4 h-4"
                 viewBox="0 0 24 24"
@@ -204,7 +204,7 @@ export default function SeriesCard({
                 href={serie.contenu.fichierUrl!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] text-ardoise/60 hover:text-azur uppercase tracking-wider transition-colors"
+                className="font-mono text-[10px] text-white/50 hover:text-solaire uppercase tracking-wider transition-colors"
               >
                 ↓ Télécharger l&apos;énoncé
               </a>
@@ -212,7 +212,7 @@ export default function SeriesCard({
           </div>
           <Link
             href={detailHref}
-            className="font-body text-xs text-azur hover:text-encre font-semibold transition-colors"
+            className="font-body text-xs text-azur hover:text-white font-semibold transition-colors"
           >
             Détails →
           </Link>
