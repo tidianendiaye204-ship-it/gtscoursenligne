@@ -216,8 +216,34 @@ export async function getRecentSeries(limit: number = 3) {
      JOIN niveaux n ON s.niveau_id = n.id
      JOIN matieres m ON s.matiere_id = m.id
      ORDER BY s.created_at DESC
-     LIMIT ?`
-  ).bind(limit).all();
+     LIMIT 20`
+  ).all();
   
-  return mapRowsToSeries(results);
+  const allRecent = await mapRowsToSeries(results);
+  
+  // Stratégie de diversité : on essaie d'avoir un panel de matières différentes
+  const diverseSeries: Serie[] = [];
+  const seenMatieres = new Set<string>();
+  
+  // 1er passage : on prend 1 série max par matière
+  for (const s of allRecent) {
+    if (!seenMatieres.has(s.matiere)) {
+      diverseSeries.push(s);
+      seenMatieres.add(s.matiere);
+    }
+    if (diverseSeries.length === limit) break;
+  }
+  
+  // 2ème passage : s'il n'y a pas assez de matières différentes pour remplir la limite, 
+  // on comble avec les autres séries les plus récentes, peu importe la matière.
+  if (diverseSeries.length < Math.min(limit, allRecent.length)) {
+    for (const s of allRecent) {
+      if (!diverseSeries.find(ds => ds.slug === s.slug)) {
+        diverseSeries.push(s);
+      }
+      if (diverseSeries.length === Math.min(limit, allRecent.length)) break;
+    }
+  }
+
+  return diverseSeries;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
+import Link from "next/link";
 import {
   NIVEAUX,
   MATIERES,
@@ -70,9 +71,15 @@ export default async function SeriePage({
         }}
       />
       <section className="mx-auto max-w-3xl px-6 py-20">
-      <p className="font-mono text-xs text-azur uppercase tracking-wider mb-2">
-        {niveau.nom} · {matiere.nom}
-      </p>
+        <nav className="font-mono text-xs text-ardoise/80 uppercase tracking-wider mb-6 flex flex-wrap items-center gap-2">
+          <Link href="/" className="hover:text-azur transition-colors">Accueil</Link>
+          <span className="text-ardoise/30">/</span>
+          <Link href="/series" className="hover:text-azur transition-colors">Séries</Link>
+          <span className="text-ardoise/30">/</span>
+          <span className="text-ardoise/60">{niveau.shortName}</span>
+          <span className="text-ardoise/30">/</span>
+          <Link href={`/series/${niveau.slug}/${matiere.slug}`} className="hover:text-azur transition-colors">{matiere.nom}</Link>
+        </nav>
       <h1 className="font-display text-3xl text-encre mb-4">{serie.titre}</h1>
       <p className="font-body text-ardoise mb-10">{serie.resume}</p>
 

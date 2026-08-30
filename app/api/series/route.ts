@@ -11,7 +11,7 @@ export async function GET() {
        FROM series s
        JOIN niveaux n ON s.niveau_id = n.id
        JOIN matieres m ON s.matiere_id = m.id
-       ORDER BY s.ordre ASC`
+       ORDER BY s.created_at DESC`
     ).all();
 
     // Map database results to Serie type
@@ -109,5 +109,58 @@ export async function DELETE(req: NextRequest) {
   } catch (error) {
     console.error("Erreur suppression série:", error);
     return NextResponse.json({ error: "Erreur lors de la suppression de la série" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const data = await req.json() as any;
+    const { originalSlug, titre, niveau, matiere, categorie, concours, resume, slug: newSlug } = data;
+
+    if (!originalSlug || !titre || !niveau || !matiere) {
+      return NextResponse.json(
+        { error: "Champs obligatoires manquants (originalSlug, titre, niveau, matiere)" },
+        { status: 400 },
+      );
+    }
+
+    const { env } = await getCloudflareContext({ async: true });
+
+    // Resolve niveau and matiere slugs to IDs
+    const { results: nResults } = await env.DB.prepare('SELECT id FROM niveaux WHERE slug = ?').bind(niveau).all();
+    const { results: mResults } = await env.DB.prepare('SELECT id FROM matieres WHERE slug = ?').bind(matiere).all();
+
+    const niveauId = nResults[0]?.id;
+    const matiereId = mResults[0]?.id;
+
+    if (!niveauId || !matiereId) {
+      return NextResponse.json(
+        { error: `Niveau "${niveau}" ou Matière "${matiere}" introuvable en base` },
+        { status: 400 },
+      );
+    }
+
+    await env.DB.prepare(
+      `UPDATE series
+       SET slug = ?, titre = ?, niveau_id = ?, matiere_id = ?, categorie = ?, concours = ?, resume = ?
+       WHERE slug = ?`
+    ).bind(
+      newSlug || originalSlug,
+      titre,
+      niveauId,
+      matiereId,
+      categorie || "serie",
+      concours || null,
+      resume || null,
+      originalSlug,
+    ).run();
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error("Erreur mise à jour série:", error);
+    return NextResponse.json(
+      { error: `Mise à jour échouée : ${error?.message || String(error)}` },
+      { status: 500 },
+    );
   }
 }
