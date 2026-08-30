@@ -14,10 +14,16 @@ export default function VisionneusePdf({ url, titre, children, className }: Visi
   const [isLoading, setIsLoading] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const openModal = () => {
-    setIsOpen(true);
-    setIsLoading(true);
+  const handleClick = (e: React.MouseEvent) => {
+    // Détection basique pour savoir si on est sur mobile
+    if (window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      window.open(url, "_blank");
+    } else {
+      setIsOpen(true);
+      setIsLoading(true);
+    }
   };
+
   const closeModal = () => setIsOpen(false);
 
   useEffect(() => {
@@ -49,7 +55,7 @@ export default function VisionneusePdf({ url, titre, children, className }: Visi
   return (
     <>
       <button
-        onClick={openModal}
+        onClick={handleClick}
         className={className ?? "inline-flex items-center justify-center px-6 py-3 bg-encre text-craie font-display font-medium rounded-full hover:bg-opacity-90 transition-colors duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-solaire focus:ring-offset-2"}
         aria-haspopup="dialog"
       >

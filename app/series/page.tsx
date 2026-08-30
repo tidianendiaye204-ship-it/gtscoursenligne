@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NIVEAUX } from "@/lib/data";
+import { NIVEAUX, getAllSeries } from "@/lib/data";
 import Parallax from "@/components/Parallax";
+import RechercheSeries from "@/components/RechercheSeries";
 
 export const metadata: Metadata = {
   title: "Séries d'exercices et corrections | GTS",
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SeriesPage() {
+export default async function SeriesPage() {
+  const toutesLesSeries = await getAllSeries();
+
   return (
     <div className="bg-encre min-h-screen text-white">
       {/* Premium Header */}
@@ -43,7 +46,8 @@ export default function SeriesPage() {
         </div>
       </section>
 
-      {/* Cards Section */}
+      <RechercheSeries seriesGlobales={toutesLesSeries}>
+        {/* Cards Section */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute top-1/2 left-0 w-96 h-96 bg-azur/10 blur-[150px] rounded-full pointer-events-none" />
         
@@ -95,6 +99,7 @@ export default function SeriesPage() {
           </div>
         </div>
       </section>
+      </RechercheSeries>
     </div>
   );
 }
