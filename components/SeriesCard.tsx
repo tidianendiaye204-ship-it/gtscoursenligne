@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { type Serie, WHATSAPP_GROUPE_URL } from "@/lib/data";
 import VisionneusePdf from "@/components/VisionneusePdf";
+import { HighlightText } from "@/components/HighlightText";
 
 const LABELS_CATEGORIE: Record<Serie["categorie"], string> = {
   serie: "Série d'exercices",
@@ -10,7 +11,13 @@ const LABELS_CATEGORIE: Record<Serie["categorie"], string> = {
   concours: "Préparation concours",
 };
 
-export default function SeriesCard({ serie }: { serie: Serie }) {
+export default function SeriesCard({ 
+  serie,
+  highlightTerm 
+}: { 
+  serie: Serie;
+  highlightTerm?: string;
+}) {
   const detailHref = `/series/${serie.niveau}/${serie.matiere}/${serie.slug}`;
   const hasEnoncePdf = !!serie.contenu.fichierUrl;
   const hasEnonceTexte = !!serie.contenu.texte;
@@ -33,15 +40,15 @@ export default function SeriesCard({ serie }: { serie: Serie }) {
 
         <Link href={detailHref} className="block group/title">
           <h3 className="font-display text-lg text-encre mb-1 group-hover/title:text-azur transition-colors duration-200">
-            {serie.titre}
+            <HighlightText text={serie.titre} highlight={highlightTerm} />
           </h3>
+          <p className="font-body text-sm text-ardoise leading-relaxed line-clamp-3">
+            <HighlightText text={serie.resume} highlight={highlightTerm} />
+          </p>
         </Link>
 
-        <p className="font-body text-xs text-azur mb-2">
-          1 exercice corrigé offert
-        </p>
-        <p className="font-body text-sm text-ardoise leading-relaxed line-clamp-3">
-          {serie.resume}
+        <p className="font-body text-xs text-azur mb-2 mt-2">
+          {serie.concours && `Concours: ${serie.concours}`}
         </p>
       </div>
 

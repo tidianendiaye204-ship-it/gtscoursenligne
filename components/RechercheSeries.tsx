@@ -85,7 +85,7 @@ export default function RechercheSeries({
             {filteredSeries.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredSeries.map((s) => (
-                  <SeriesCard key={`${s.niveau}-${s.matiere}-${s.slug}`} serie={s} />
+                  <SeriesCard key={`${s.niveau}-${s.matiere}-${s.slug}`} serie={s} highlightTerm={debouncedQuery.trim()} />
                 ))}
               </div>
             ) : (

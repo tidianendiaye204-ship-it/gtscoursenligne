@@ -66,8 +66,8 @@ export async function POST(req: NextRequest) {
     const id = crypto.randomUUID();
 
     await env.DB.prepare(
-      `INSERT INTO series (id, slug, titre, niveau_id, matiere_id, categorie, concours, resume, contenu_type, contenu_fichier_url, contenu_texte, corrige_exemple_type, corrige_exemple_url, corrige_exemple_texte)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO series (id, slug, titre, niveau_id, matiere_id, categorie, concours, resume, contenu_type, contenu_fichier_url, contenu_texte, corrige_exemple_type, corrige_exemple_url, corrige_exemple_texte, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
     ).bind(
       id,
       data.slug,

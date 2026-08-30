@@ -1,0 +1,2 @@
+ALTER TABLE series ADD COLUMN created_at DATETIME;
+UPDATE series SET created_at = CURRENT_TIMESTAMP;

@@ -36,6 +36,7 @@ export type Serie = {
   contenu: { type: "pdf" | "texte"; fichierUrl?: string; texte?: string };
   // Corrigé d'un seul exercice, offert en exemple. La correction complète n'est jamais publiée sur le site — elle est réservée aux élèves inscrits aux cours WhatsApp.
   corrigeExemple: { type: "pdf" | "texte"; fichierUrl?: string; texte?: string };
+  created_at?: string;
 };
 
 export const CATEGORIES: { slug: Categorie; nom: string; nomCourt: string }[] = [
@@ -115,6 +116,7 @@ async function mapRowsToSeries(results: any[]): Promise<Serie[]> {
       fichierUrl: row.corrige_exemple_url,
       texte: row.corrige_exemple_texte,
     },
+    created_at: row.created_at,
   }));
 }
 
@@ -170,6 +172,20 @@ export async function getAllSeries() {
      JOIN matieres m ON s.matiere_id = m.id
      ORDER BY s.ordre ASC`
   ).all();
+  
+  return mapRowsToSeries(results);
+}
+
+export async function getRecentSeries(limit: number = 3) {
+  const { env } = await getCloudflareContext({ async: true });
+  const { results } = await env.DB.prepare(
+    `SELECT s.*, n.slug as niveau_slug, m.slug as matiere_slug
+     FROM series s
+     JOIN niveaux n ON s.niveau_id = n.id
+     JOIN matieres m ON s.matiere_id = m.id
+     ORDER BY s.created_at DESC
+     LIMIT ?`
+  ).bind(limit).all();
   
   return mapRowsToSeries(results);
 }

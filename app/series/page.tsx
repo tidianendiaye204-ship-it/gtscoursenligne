@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NIVEAUX, getAllSeries } from "@/lib/data";
+import { NIVEAUX, getAllSeries, getRecentSeries } from "@/lib/data";
 import Parallax from "@/components/Parallax";
 import RechercheSeries from "@/components/RechercheSeries";
+import SeriesCard from "@/components/SeriesCard";
 
 export const metadata: Metadata = {
   title: "Séries d'exercices et corrections | GTS",
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function SeriesPage() {
   const toutesLesSeries = await getAllSeries();
+  const seriesRecentes = await getRecentSeries(3);
 
   return (
     <div className="bg-encre min-h-screen text-white">
@@ -47,6 +49,27 @@ export default async function SeriesPage() {
       </section>
 
       <RechercheSeries seriesGlobales={toutesLesSeries}>
+        {/* Séries Récemment Ajoutées */}
+        {seriesRecentes.length > 0 && (
+          <section className="relative py-16 overflow-hidden border-b border-white/5">
+            <div className="mx-auto max-w-7xl px-6 relative z-10">
+              <div className="flex items-center gap-3 mb-10">
+                <div className="w-10 h-10 rounded-full bg-solaire/20 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-solaire" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                </div>
+                <h2 className="font-display text-3xl text-white">Nouveautés</h2>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {seriesRecentes.map((s) => (
+                  <SeriesCard key={s.slug} serie={s} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Cards Section */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute top-1/2 left-0 w-96 h-96 bg-azur/10 blur-[150px] rounded-full pointer-events-none" />

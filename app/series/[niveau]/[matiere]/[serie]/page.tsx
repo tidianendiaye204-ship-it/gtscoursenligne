@@ -11,6 +11,7 @@ import {
 } from "@/lib/data";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import VisionneusePdf from "@/components/VisionneusePdf";
+import ZenModeText from "@/components/ZenModeText";
 
 export async function generateMetadata({
   params,
@@ -47,7 +48,27 @@ export default async function SeriePage({
   if (!serie || !niveau || !matiere) notFound();
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-20">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "EducationalResource",
+            "name": serie.titre,
+            "description": serie.resume,
+            "learningResourceType": "Exercise Series",
+            "educationalLevel": niveau.nom,
+            "teaches": matiere.nom,
+            "provider": {
+              "@type": "Organization",
+              "name": "GTS Cours En Ligne",
+              "url": "https://gtscoursenligne.com"
+            }
+          })
+        }}
+      />
+      <section className="mx-auto max-w-3xl px-6 py-20">
       <p className="font-mono text-xs text-azur uppercase tracking-wider mb-2">
         {niveau.nom} · {matiere.nom}
       </p>
@@ -64,9 +85,7 @@ export default async function SeriePage({
         </div>
         {serie.contenu.texte ? (
           <div className={`w-full bg-[#f8f9fa] p-8 rounded-2xl border border-black/5 ${serie.contenu.fichierUrl ? 'mb-4' : ''}`}>
-            <p className="font-body text-ardoise whitespace-pre-line leading-relaxed">
-              {serie.contenu.texte}
-            </p>
+            <ZenModeText titre={`Énoncé — ${serie.titre}`} texte={serie.contenu.texte} />
           </div>
         ) : null}
         
@@ -107,9 +126,7 @@ export default async function SeriePage({
         
         {serie.corrigeExemple.texte ? (
           <div className={`w-full bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm ${serie.corrigeExemple.fichierUrl ? 'mb-4' : ''}`}>
-            <p className="font-body text-white/80 whitespace-pre-line leading-relaxed">
-              {serie.corrigeExemple.texte}
-            </p>
+            <ZenModeText titre={`Corrigé — ${serie.titre}`} texte={serie.corrigeExemple.texte} darkTheme={true} />
           </div>
         ) : null}
 
@@ -146,5 +163,6 @@ export default async function SeriePage({
         <WhatsAppButton />
       </div>
     </section>
+    </>
   );
 }

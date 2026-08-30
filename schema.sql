@@ -38,7 +38,8 @@ CREATE TABLE series (
   corrige_exemple_type TEXT CHECK (corrige_exemple_type IN ('pdf', 'texte')),
   corrige_exemple_url TEXT,
   corrige_exemple_texte TEXT,
-  ordre INTEGER DEFAULT 0
+  ordre INTEGER DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Données de départ (niveaux et matières fixes)
