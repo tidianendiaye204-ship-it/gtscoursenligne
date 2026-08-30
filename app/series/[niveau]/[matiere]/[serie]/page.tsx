@@ -62,7 +62,15 @@ export default async function SeriePage({
             Aperçu gratuit
           </span>
         </div>
-        {serie.contenu.type === "pdf" && serie.contenu.fichierUrl ? (
+        {serie.contenu.texte ? (
+          <div className={`w-full bg-[#f8f9fa] p-8 rounded-2xl border border-black/5 ${serie.contenu.fichierUrl ? 'mb-4' : ''}`}>
+            <p className="font-body text-ardoise whitespace-pre-line leading-relaxed">
+              {serie.contenu.texte}
+            </p>
+          </div>
+        ) : null}
+        
+        {serie.contenu.fichierUrl ? (
           <div className="flex flex-col items-center justify-center p-8 bg-[#f8f9fa] rounded-2xl border border-black/5">
             <VisionneusePdf url={serie.contenu.fichierUrl} titre={`Énoncé de ${serie.titre}`}>
               Lire l&apos;énoncé
@@ -76,15 +84,11 @@ export default async function SeriePage({
               Télécharger le PDF
             </a>
           </div>
-        ) : serie.contenu.type === "texte" && serie.contenu.texte ? (
-          <div className="w-full bg-[#f8f9fa] p-8 rounded-2xl border border-black/5">
-            <p className="font-body text-ardoise whitespace-pre-line leading-relaxed">
-              {serie.contenu.texte}
-            </p>
-          </div>
-        ) : (
+        ) : null}
+
+        {!serie.contenu.texte && !serie.contenu.fichierUrl && (
           <div className="flex flex-col items-center justify-center p-8 bg-[#f8f9fa] rounded-2xl border border-black/5 text-center">
-            <p className="font-body text-ardoise/60 italic">Le fichier sera bientôt disponible.</p>
+            <p className="font-body text-ardoise/60 italic">L&apos;énoncé sera bientôt disponible.</p>
           </div>
         )}
       </div>
@@ -101,7 +105,15 @@ export default async function SeriePage({
           </span>
         </div>
         
-        {serie.corrigeExemple.type === "pdf" && serie.corrigeExemple.fichierUrl ? (
+        {serie.corrigeExemple.texte ? (
+          <div className={`w-full bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm ${serie.corrigeExemple.fichierUrl ? 'mb-4' : ''}`}>
+            <p className="font-body text-white/80 whitespace-pre-line leading-relaxed">
+              {serie.corrigeExemple.texte}
+            </p>
+          </div>
+        ) : null}
+
+        {serie.corrigeExemple.fichierUrl ? (
           <div className="flex flex-col items-center justify-center p-8 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
             <VisionneusePdf url={serie.corrigeExemple.fichierUrl} titre={`Corrigé de ${serie.titre}`}>
               Lire le corrigé
@@ -115,13 +127,9 @@ export default async function SeriePage({
               Télécharger le PDF
             </a>
           </div>
-        ) : serie.corrigeExemple.type === "texte" && serie.corrigeExemple.texte ? (
-          <div className="w-full bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
-            <p className="font-body text-white/80 whitespace-pre-line leading-relaxed">
-              {serie.corrigeExemple.texte}
-            </p>
-          </div>
-        ) : (
+        ) : null}
+
+        {!serie.corrigeExemple.texte && !serie.corrigeExemple.fichierUrl && (
           <div className="flex flex-col items-center justify-center p-8 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm text-center">
             <p className="font-body text-white/40 italic">Le corrigé sera bientôt disponible.</p>
           </div>

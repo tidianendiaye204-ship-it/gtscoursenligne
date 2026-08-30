@@ -81,7 +81,7 @@ export default function VisionneusePdf({ url, titre, children, className }: Visi
 
           {/* Modal Container */}
           <div
-            className="relative w-full h-full max-w-5xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="relative w-full flex-1 max-w-5xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {isLoading && (
