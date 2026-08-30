@@ -3733,7 +3733,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/7.js": {
-      "bytes": 11350,
+      "bytes": 11246,
       "imports": [],
       "format": "cjs"
     },
@@ -3804,7 +3804,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/series/[niveau]/[matiere]/[serie]/page.js": {
-      "bytes": 35352,
+      "bytes": 35159,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -7667,7 +7667,7 @@
           "bytesInOutput": 31992
         },
         ".open-next/server-functions/default/.next/server/chunks/7.js": {
-          "bytesInOutput": 11537
+          "bytesInOutput": 11434
         },
         ".open-next/server-functions/default/.next/server/chunks/871.js": {
           "bytesInOutput": 6281
@@ -7679,7 +7679,7 @@
           "bytesInOutput": 2036
         },
         ".open-next/server-functions/default/.next/server/app/series/[niveau]/[matiere]/[serie]/page.js": {
-          "bytesInOutput": 35733
+          "bytesInOutput": 35541
         },
         ".open-next/server-functions/default/.next/server/app/series/[niveau]/[matiere]/page.js": {
           "bytesInOutput": 24907
@@ -7889,7 +7889,7 @@
           "bytesInOutput": 66331
         }
       },
-      "bytes": 3432948
+      "bytes": 3432653
     }
   }
 }

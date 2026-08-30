@@ -72,11 +72,11 @@ export default function VisionneusePdf({ url, titre, children, className }: Visi
         >
           {/* Modal Container */}
           <div
-            className="relative w-full h-full max-w-[1400px] bg-white rounded-xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="relative w-full h-full max-w-[1400px] bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header avec Titre et Bouton Fermer */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-100 shrink-0">
+            <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-100 h-[60px]">
               <h3 className="font-display text-encre text-lg font-medium line-clamp-1 pr-4">{titre}</h3>
               <button
                 ref={closeButtonRef}
@@ -92,18 +92,11 @@ export default function VisionneusePdf({ url, titre, children, className }: Visi
             </div>
 
             {/* Conteneur iFrame */}
-            <div className="relative w-full flex-1 bg-white">
-              {isLoading && (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white">
-                  <div className="w-10 h-10 border-4 border-solaire/30 border-t-solaire rounded-full animate-spin mb-4"></div>
-                  <p className="font-body text-ardoise text-sm animate-pulse">Chargement du document...</p>
-                </div>
-              )}
+            <div className="relative w-full h-[calc(100%-60px)] bg-white">
               <iframe
                 src={`${url}#toolbar=1&navpanes=0&view=FitH`}
-                className={`absolute inset-0 w-full h-full border-none transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                className="absolute inset-0 w-full h-full border-none"
                 title={titre}
-                onLoad={() => setIsLoading(false)}
               />
             </div>
           </div>

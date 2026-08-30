@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type Serie, WHATSAPP_GROUPE_URL } from "@/lib/data";
+import { type Serie, WHATSAPP_GROUPE_URL, buildDownloadUrl } from "@/lib/data";
 import VisionneusePdf from "@/components/VisionneusePdf";
 import { HighlightText } from "@/components/HighlightText";
 
@@ -201,9 +201,10 @@ export default function SeriesCard({
           <div className="flex gap-3">
             {hasEnoncePdf && (
               <a
-                href={serie.contenu.fichierUrl!}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={buildDownloadUrl(
+                  serie.contenu.fichierUrl!,
+                  `${serie.slug}-enonce.pdf`
+                )}
                 className="font-mono text-[10px] text-white/50 hover:text-solaire uppercase tracking-wider transition-colors"
               >
                 ↓ Télécharger l&apos;énoncé

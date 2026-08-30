@@ -88,6 +88,38 @@ export const TARIFS = { inscription: "1500F", mensualite: "1500F" };
 
 export const WHATSAPP_GROUPE_URL = "https://wa.me/221788244692";
 
+const R2_BASE_URL =
+  process.env.NEXT_PUBLIC_R2_URL ||
+  "https://pub-e5d22f2c4db84e46bb88d70849adae66.r2.dev";
+
+/**
+ * Extract the R2 object key (path) from a full public R2 URL.
+ * e.g. "https://pub-xxx.r2.dev/series/terminale-s2/physique/slug-enonce.pdf"
+ *   → "series/terminale-s2/physique/slug-enonce.pdf"
+ */
+export function extractR2Path(publicUrl: string): string {
+  if (publicUrl.startsWith(R2_BASE_URL)) {
+    return publicUrl.slice(R2_BASE_URL.length + 1); // +1 for the "/"
+  }
+  // Fallback: strip any https://…r2.dev/ prefix
+  const match = publicUrl.match(/r2\.dev\/(.+)$/);
+  return match ? match[1] : publicUrl;
+}
+
+/**
+ * Build a /api/download URL that forces the browser to download the PDF.
+ * @param publicUrl - The full public R2 URL stored in DB
+ * @param nomLisible - Optional human-readable filename (e.g. "cinematique-du-point-enonce.pdf")
+ */
+export function buildDownloadUrl(publicUrl: string, nomLisible?: string): string {
+  const path = extractR2Path(publicUrl);
+  const params = new URLSearchParams({ path });
+  if (nomLisible) {
+    params.set("nom", nomLisible.endsWith(".pdf") ? nomLisible : `${nomLisible}.pdf`);
+  }
+  return `/api/download?${params.toString()}`;
+}
+
 export const CONCOURS: { slug: Concours; nom: string; description: string }[] = [
   { slug: "ESP", nom: "ESP", description: "École Supérieure Polytechnique de Dakar" },
   { slug: "EPT", nom: "EPT", description: "École Polytechnique de Thiès" },

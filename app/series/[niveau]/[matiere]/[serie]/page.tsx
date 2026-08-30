@@ -6,6 +6,7 @@ import {
   MATIERES,
   getSerie,
   TARIFS,
+  buildDownloadUrl,
   type Niveau,
   type Matiere,
 } from "@/lib/data";
@@ -95,9 +96,10 @@ export default async function SeriePage({
               Lire l&apos;énoncé
             </VisionneusePdf>
             <a
-              href={serie.contenu.fichierUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={buildDownloadUrl(
+                serie.contenu.fichierUrl,
+                `${serie.slug}-enonce.pdf`
+              )}
               className="mt-4 text-sm text-ardoise hover:text-encre underline decoration-ardoise/30 hover:decoration-encre transition-colors"
             >
               Télécharger le PDF
@@ -136,9 +138,10 @@ export default async function SeriePage({
               Lire le corrigé
             </VisionneusePdf>
             <a
-              href={serie.corrigeExemple.fichierUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={buildDownloadUrl(
+                serie.corrigeExemple.fichierUrl,
+                `${serie.slug}-corrige.pdf`
+              )}
               className="mt-4 text-sm text-white/60 hover:text-white underline decoration-white/30 hover:decoration-white transition-colors"
             >
               Télécharger le PDF
