@@ -5,6 +5,8 @@ import Parallax from "@/components/Parallax";
 import RechercheSeries from "@/components/RechercheSeries";
 import SeriesCard from "@/components/SeriesCard";
 
+const AFFICHER_NOUVEAUTES = false;
+
 export const metadata: Metadata = {
   title: "Séries d'exercices et corrections | GTS",
   description:
@@ -50,7 +52,7 @@ export default async function SeriesPage() {
 
       <RechercheSeries seriesGlobales={toutesLesSeries}>
         {/* Séries Récemment Ajoutées */}
-        {seriesRecentes.length > 0 && (
+        {AFFICHER_NOUVEAUTES && seriesRecentes.length > 0 && (
           <section className="relative py-16 overflow-hidden border-b border-white/5">
             <div className="mx-auto max-w-7xl px-6 relative z-10">
               <div className="flex items-center gap-3 mb-10">
