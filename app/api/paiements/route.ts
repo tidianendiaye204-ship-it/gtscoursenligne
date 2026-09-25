@@ -37,7 +37,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const { env } = await getCloudflareContext({ async: true });
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const { action, payload } = body;
 
     if (action === 'TOGGLE_PAIEMENT') {

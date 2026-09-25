@@ -42,7 +42,7 @@ export default function PaiementsPage() {
     setLoading(true);
     try {
       const res = await fetch(`/api/paiements?mois=${mois}`);
-      const data = await res.json();
+      const data = (await res.json()) as { eleves: Eleve[], niveaux: Niveau[] };
       setEleves(data.eleves || []);
       setNiveaux(data.niveaux || []);
     } catch (e) {
