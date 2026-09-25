@@ -219,6 +219,25 @@ export default function PaiementsPage() {
   const elevesImpayes = filteredEleves.filter(e => (e.paiement_statut || 'impayé') !== 'payé');
   const elevesPayes = filteredEleves.filter(e => e.paiement_statut === 'payé');
 
+  const copierNumerosImpayes = async () => {
+    const numeros = elevesImpayes
+      .map(e => e.numero_whatsapp)
+      .filter(num => num && num.trim() !== '')
+      .join(', ');
+      
+    if (numeros) {
+      try {
+        await navigator.clipboard.writeText(numeros);
+        alert(`${elevesImpayes.length} numéro(s) copié(s) ! Tu peux les coller dans une Liste de Diffusion WhatsApp.`);
+      } catch (err) {
+        console.error('Erreur lors de la copie', err);
+        alert('Erreur lors de la copie des numéros.');
+      }
+    } else {
+      alert("Aucun numéro à copier.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-encre text-white p-4 md:p-8 font-body">
       <div className="max-w-4xl mx-auto">
@@ -301,9 +320,19 @@ export default function PaiementsPage() {
                 {/* SECTION IMPAYÉS */}
                 {(filterStatut === 'tous' || filterStatut === 'impayé') && elevesImpayes.length > 0 && (
                   <div>
-                    <h2 className="text-xl font-bold text-red-400 mb-4 border-b border-red-500/20 pb-2">
-                      ❌ À Relancer (Impayés) - {elevesImpayes.length} élève(s)
-                    </h2>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 border-b border-red-500/20 pb-2">
+                      <h2 className="text-xl font-bold text-red-400">
+                        ❌ À Relancer (Impayés) - {elevesImpayes.length} élève(s)
+                      </h2>
+                      <button 
+                        onClick={copierNumerosImpayes}
+                        className="mt-2 sm:mt-0 flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold transition-colors"
+                        title="Copier les numéros pour une liste de diffusion"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                        Copier les numéros
+                      </button>
+                    </div>
                     <div className="grid gap-4">
                       {elevesImpayes.map(e => (
                         <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-red-900/10 border border-red-500/20 hover:border-red-500/50 transition-all shadow-lg group">
