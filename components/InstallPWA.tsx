@@ -4,20 +4,23 @@ import { useEffect, useState } from "react";
 
 export default function InstallPWA() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isInstallable, setIsInstallable] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
+    // Vérifie si on est déjà en mode PWA (installée)
+    const checkStandalone = () => {
+      return window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone;
+    };
+    
+    setIsStandalone(checkStandalone());
+
     const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
-      // Update UI notify the user they can install the PWA
-      setIsInstallable(true);
     };
 
     const handleAppInstalled = () => {
-      setIsInstallable(false);
+      setIsStandalone(true);
       setDeferredPrompt(null);
     };
 
@@ -39,20 +42,16 @@ export default function InstallPWA() {
       );
       return;
     }
-    // Show the install prompt
     deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
-    // We no longer need the prompt. Clear it up.
     if (outcome === "accepted") {
-      setIsInstallable(false);
+      setIsStandalone(true);
     }
     setDeferredPrompt(null);
   };
 
-  // On l'affiche toujours pour que tu puisses voir le design. 
-  // Sur les navigateurs compatibles, ça lancera l'installation.
-  // Sur les autres (comme Safari), ça affichera un message d'aide.
+  // On cache le bouton si l'application est déjà installée
+  if (isStandalone) return null;
 
   return (
     <button
