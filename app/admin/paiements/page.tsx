@@ -80,7 +80,7 @@ export default function PaiementsPage() {
     setHistorique([]);
     try {
       const res = await fetch(`/api/paiements?eleve_id=${eleve.id}`);
-      const data = await res.json();
+      const data = (await res.json()) as any;
       setHistorique(data.historique || []);
     } catch (e) {
       console.error(e);
