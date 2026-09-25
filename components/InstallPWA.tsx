@@ -31,7 +31,14 @@ export default function InstallPWA() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert(
+        "Pour installer l'application sur votre appareil :\n\n" +
+        "- Sur iOS (Safari) : Appuyez sur l'icône Partager, puis 'Sur l'écran d'accueil'.\n" +
+        "- Sur Android / Ordinateur : L'installation devrait se faire automatiquement si le navigateur est compatible."
+      );
+      return;
+    }
     // Show the install prompt
     deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
@@ -43,7 +50,9 @@ export default function InstallPWA() {
     setDeferredPrompt(null);
   };
 
-  if (!isInstallable) return null;
+  // On l'affiche toujours pour que tu puisses voir le design. 
+  // Sur les navigateurs compatibles, ça lancera l'installation.
+  // Sur les autres (comme Safari), ça affichera un message d'aide.
 
   return (
     <button
@@ -53,7 +62,7 @@ export default function InstallPWA() {
       <svg className="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
       </svg>
-      Installer
+      Installer l'App
     </button>
   );
 }
