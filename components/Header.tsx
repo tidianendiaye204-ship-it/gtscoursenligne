@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import InstallPWA from "./InstallPWA";
 
 const liens = [
   { href: "/", label: "Accueil" },
@@ -50,6 +51,9 @@ export default function Header() {
               {l.label}
             </Link>
           ))}
+          <div className="ml-2">
+            <InstallPWA />
+          </div>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -82,6 +86,9 @@ export default function Header() {
                 {l.label}
               </Link>
             ))}
+            <div className="px-4 py-4 mt-2 border-t border-white/10">
+              <InstallPWA />
+            </div>
           </nav>
         </div>
       )}
