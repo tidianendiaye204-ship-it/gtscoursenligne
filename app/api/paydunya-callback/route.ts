@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as any;
     
     // 1. PayDunya enverra le statut du paiement ici.
     // Doc: https://paydunya.com/developers/api/checkout/invoices (IPN / Webhooks)
@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
       
       if (eleveId && mois) {
         // Mettre à jour la base de données
-        const DB = getRequestContext().env.DB;
+        const { env } = await getCloudflareContext({ async: true });
         
-        await DB.prepare(`
+        await env.DB.prepare(`
           INSERT INTO paiements (id, eleve_id, mois, statut, date_paiement, montant)
           VALUES (lower(hex(randomblob(16))), ?, ?, 'payé', datetime('now'), 1500)
           ON CONFLICT(eleve_id, mois) 

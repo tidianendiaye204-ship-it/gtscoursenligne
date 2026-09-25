@@ -9,7 +9,7 @@ export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const { action, eleveId, mois, nom, prenom, email } = body;
 
     // TODO: Récupérer les clés d'environnement depuis Cloudflare
