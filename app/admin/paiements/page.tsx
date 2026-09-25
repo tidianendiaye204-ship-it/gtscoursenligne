@@ -34,6 +34,9 @@ export default function PaiementsPage() {
   const [isAdding, setIsAdding] = useState(false);
   const [newEleve, setNewEleve] = useState({ nom: "", prenom: "", numero_whatsapp: "", niveau_id: "" });
 
+  const [historique, setHistorique] = useState<any[]>([]);
+  const [selectedEleve, setSelectedEleve] = useState<Eleve | null>(null);
+
   useEffect(() => {
     fetchData();
   }, [mois]);
@@ -49,6 +52,38 @@ export default function PaiementsPage() {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const archiverEleve = async (eleve: Eleve) => {
+    if (!confirm(`Voulez-vous vraiment désactiver l'élève ${eleve.prenom} ${eleve.nom} ? Il n'apparaîtra plus dans les listes.`)) return;
+
+    // Optimistic UI
+    setEleves(eleves.filter(e => e.id !== eleve.id));
+
+    try {
+      await fetch('/api/paiements', {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'ARCHIVER_ELEVE',
+          payload: { eleve_id: eleve.id }
+        })
+      });
+    } catch (e) {
+      alert("Erreur lors de l'archivage");
+      fetchData();
+    }
+  };
+
+  const voirHistorique = async (eleve: Eleve) => {
+    setSelectedEleve(eleve);
+    setHistorique([]);
+    try {
+      const res = await fetch(`/api/paiements?eleve_id=${eleve.id}`);
+      const data = await res.json();
+      setHistorique(data.historique || []);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -200,6 +235,22 @@ export default function PaiementsPage() {
           </button>
         </header>
 
+        {/* Dashboard Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col justify-center items-center shadow-xl">
+            <span className="text-white/60 text-sm uppercase tracking-wider mb-2">Total Attendu</span>
+            <span className="text-3xl font-display font-bold text-white">{filteredEleves.length * 1500} FCFA</span>
+          </div>
+          <div className="bg-green-900/20 border border-green-500/30 p-6 rounded-2xl flex flex-col justify-center items-center shadow-xl">
+            <span className="text-green-400/80 text-sm uppercase tracking-wider mb-2">Déjà Encaissé</span>
+            <span className="text-3xl font-display font-bold text-green-400">{elevesPayes.length * 1500} FCFA</span>
+          </div>
+          <div className="bg-red-900/10 border border-red-500/20 p-6 rounded-2xl flex flex-col justify-center items-center shadow-xl">
+            <span className="text-red-400/80 text-sm uppercase tracking-wider mb-2">Reste à Recouvrer</span>
+            <span className="text-3xl font-display font-bold text-red-400">{elevesImpayes.length * 1500} FCFA</span>
+          </div>
+        </div>
+
         {/* Filtres & Mois */}
         <div className="bg-white/5 p-4 rounded-2xl border border-white/10 mb-6 flex flex-col md:flex-row gap-4 shadow-xl">
           <div className="flex-1">
@@ -255,12 +306,19 @@ export default function PaiementsPage() {
                     </h2>
                     <div className="grid gap-4">
                       {elevesImpayes.map(e => (
-                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-red-900/10 border border-red-500/20 hover:border-red-500/50 transition-all shadow-lg">
-                          <div className="mb-4 sm:mb-0">
-                            <h3 className="font-bold text-lg">{e.prenom} {e.nom}</h3>
+                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-red-900/10 border border-red-500/20 hover:border-red-500/50 transition-all shadow-lg group">
+                          <div className="mb-4 sm:mb-0 cursor-pointer" onClick={() => voirHistorique(e)}>
+                            <h3 className="font-bold text-lg group-hover:text-azur transition-colors">{e.prenom} {e.nom}</h3>
                             <p className="text-sm text-white/60">{e.niveau_nom} • {e.numero_whatsapp}</p>
                           </div>
                           <div className="flex items-center gap-3">
+                            <button 
+                              onClick={() => archiverEleve(e)}
+                              className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors"
+                              title="Désactiver l'élève"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
                             <button 
                               onClick={() => togglePaiement(e)}
                               className="px-4 py-2 rounded-xl text-sm font-bold transition-colors bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/40"
@@ -291,12 +349,19 @@ export default function PaiementsPage() {
                     </h2>
                     <div className="grid gap-4">
                       {elevesPayes.map(e => (
-                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-green-900/20 border border-green-500/30 hover:border-green-500/50 transition-all shadow-lg opacity-80">
-                          <div className="mb-4 sm:mb-0">
-                            <h3 className="font-bold text-lg">{e.prenom} {e.nom}</h3>
+                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-green-900/20 border border-green-500/30 hover:border-green-500/50 transition-all shadow-lg opacity-80 group">
+                          <div className="mb-4 sm:mb-0 cursor-pointer" onClick={() => voirHistorique(e)}>
+                            <h3 className="font-bold text-lg group-hover:text-azur transition-colors">{e.prenom} {e.nom}</h3>
                             <p className="text-sm text-white/60">{e.niveau_nom} • {e.numero_whatsapp}</p>
                           </div>
                           <div className="flex items-center gap-3">
+                            <button 
+                              onClick={() => archiverEleve(e)}
+                              className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors"
+                              title="Désactiver l'élève"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
                             <button 
                               onClick={() => togglePaiement(e)}
                               className="px-4 py-2 rounded-xl text-sm font-bold transition-colors bg-green-500/20 text-green-400 border border-green-500/50 hover:bg-green-500/40"
@@ -355,6 +420,38 @@ export default function PaiementsPage() {
                   <button type="submit" className="flex-1 bg-azur hover:bg-azur/80 text-white rounded-xl py-3 font-bold transition-colors">Ajouter</button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Historique */}
+        {selectedEleve && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in-up">
+            <div className="bg-encre border border-white/20 p-6 rounded-2xl w-full max-w-md shadow-2xl max-h-[80vh] flex flex-col">
+              <h2 className="text-2xl font-display font-bold text-solaire mb-2">Historique</h2>
+              <p className="text-white/60 mb-6">{selectedEleve.prenom} {selectedEleve.nom}</p>
+              
+              <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                {historique.length === 0 ? (
+                  <p className="text-white/40 text-center py-4">Aucun paiement enregistré.</p>
+                ) : (
+                  historique.map((h, i) => (
+                    <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl flex justify-between items-center">
+                      <div>
+                        <p className="font-bold capitalize">{new Date(`${h.mois}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</p>
+                        <p className="text-xs text-white/50">{h.date_paiement ? new Date(h.date_paiement).toLocaleDateString('fr-FR') : '-'}</p>
+                      </div>
+                      <div className={`px-3 py-1 rounded-full text-xs font-bold ${h.statut === 'payé' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        {h.statut}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              
+              <div className="pt-6">
+                <button type="button" onClick={() => setSelectedEleve(null)} className="w-full bg-white/5 hover:bg-white/10 text-white rounded-xl py-3 font-bold transition-colors">Fermer</button>
+              </div>
             </div>
           </div>
         )}
