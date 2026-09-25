@@ -159,7 +159,7 @@ export default function PaiementsPage() {
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
       doc.text(`Mensualité : ${moisTexte.toUpperCase()}`, 30, 170);
-      doc.text(`Montant : 15 000 FCFA`, 30, 180);
+      doc.text(`Montant : 1 500 FCFA`, 30, 180);
       
       // Tampon PAYÉ
       doc.setDrawColor(34, 197, 94); // Vert
@@ -180,6 +180,9 @@ export default function PaiementsPage() {
       doc.save(`Recu_GTS_${eleve.prenom}_${eleve.nom}_${moisTexte}.pdf`);
     });
   };
+
+  const elevesImpayes = filteredEleves.filter(e => (e.paiement_statut || 'impayé') !== 'payé');
+  const elevesPayes = filteredEleves.filter(e => e.paiement_statut === 'payé');
 
   return (
     <div className="min-h-screen bg-encre text-white p-4 md:p-8 font-body">
@@ -233,60 +236,90 @@ export default function PaiementsPage() {
           </div>
         </div>
 
-        {/* Liste */}
+        {/* Listes */}
         {loading ? (
           <div className="text-center py-10 text-white/50 animate-pulse">Chargement des données...</div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid gap-10">
             {filteredEleves.length === 0 ? (
               <div className="text-center py-10 bg-white/5 rounded-2xl border border-white/10 text-white/50">
                 Aucun élève trouvé pour ces critères.
               </div>
             ) : (
-              filteredEleves.map(e => {
-                const statut = e.paiement_statut || 'impayé';
-                const isPaye = statut === 'payé';
-
-                return (
-                  <div key={e.id} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border transition-all ${isPaye ? 'bg-green-900/20 border-green-500/30' : 'bg-red-900/10 border-red-500/20'} hover:border-white/20 shadow-lg`}>
-                    <div className="mb-4 sm:mb-0">
-                      <h3 className="font-bold text-lg">{e.prenom} {e.nom}</h3>
-                      <p className="text-sm text-white/60">{e.niveau_nom} • {e.numero_whatsapp}</p>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <button 
-                        onClick={() => togglePaiement(e)}
-                        className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-sm font-bold transition-colors border ${isPaye ? 'bg-green-500/20 text-green-400 border-green-500/50 hover:bg-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/50 hover:bg-red-500/30'}`}
-                      >
-                        {isPaye ? '✅ Payé' : '❌ Impayé'}
-                      </button>
-
-                      {!isPaye ? (
-                        <a 
-                          href={formatterWhatsAppMessage(e)}
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500 hover:bg-green-400 text-white transition-transform hover:scale-105 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
-                          title="Relancer sur WhatsApp"
-                        >
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        </a>
-                      ) : (
-                        <button 
-                          onClick={() => genererRecu(e)}
-                          className="flex items-center justify-center w-10 h-10 rounded-xl bg-azur hover:bg-azur/80 text-white transition-transform hover:scale-105 shadow-[0_0_15px_rgba(56,189,248,0.3)]"
-                          title="Générer le reçu PDF"
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                        </button>
-                      )}
+              <>
+                {/* SECTION IMPAYÉS */}
+                {(filterStatut === 'tous' || filterStatut === 'impayé') && elevesImpayes.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-bold text-red-400 mb-4 border-b border-red-500/20 pb-2">
+                      ❌ À Relancer (Impayés) - {elevesImpayes.length} élève(s)
+                    </h2>
+                    <div className="grid gap-4">
+                      {elevesImpayes.map(e => (
+                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-red-900/10 border border-red-500/20 hover:border-red-500/50 transition-all shadow-lg">
+                          <div className="mb-4 sm:mb-0">
+                            <h3 className="font-bold text-lg">{e.prenom} {e.nom}</h3>
+                            <p className="text-sm text-white/60">{e.niveau_nom} • {e.numero_whatsapp}</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <button 
+                              onClick={() => togglePaiement(e)}
+                              className="px-4 py-2 rounded-xl text-sm font-bold transition-colors bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/40"
+                            >
+                              Marquer comme Payé
+                            </button>
+                            <a 
+                              href={formatterWhatsAppMessage(e)}
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500 hover:bg-green-400 text-white transition-transform hover:scale-105 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                              title="Relancer sur WhatsApp"
+                            >
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            </a>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                );
-              })
+                )}
+
+                {/* SECTION PAYÉS */}
+                {(filterStatut === 'tous' || filterStatut === 'payé') && elevesPayes.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-bold text-green-400 mb-4 border-b border-green-500/20 pb-2">
+                      ✅ En Règle (Payés) - {elevesPayes.length} élève(s)
+                    </h2>
+                    <div className="grid gap-4">
+                      {elevesPayes.map(e => (
+                        <div key={e.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-green-900/20 border border-green-500/30 hover:border-green-500/50 transition-all shadow-lg opacity-80">
+                          <div className="mb-4 sm:mb-0">
+                            <h3 className="font-bold text-lg">{e.prenom} {e.nom}</h3>
+                            <p className="text-sm text-white/60">{e.niveau_nom} • {e.numero_whatsapp}</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <button 
+                              onClick={() => togglePaiement(e)}
+                              className="px-4 py-2 rounded-xl text-sm font-bold transition-colors bg-green-500/20 text-green-400 border border-green-500/50 hover:bg-green-500/40"
+                              title="Annuler le paiement"
+                            >
+                              Payé
+                            </button>
+                            <button 
+                              onClick={() => genererRecu(e)}
+                              className="flex items-center justify-center w-10 h-10 rounded-xl bg-azur hover:bg-azur/80 text-white transition-transform hover:scale-105 shadow-[0_0_15px_rgba(56,189,248,0.3)]"
+                              title="Générer le reçu PDF"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
