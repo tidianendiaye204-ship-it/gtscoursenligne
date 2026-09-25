@@ -1,6 +1,12 @@
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+import withSerwistInit from "@serwist/next";
 
 initOpenNextCloudflareForDev();
+
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,4 +17,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSerwist(nextConfig);

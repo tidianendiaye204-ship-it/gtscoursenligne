@@ -15,6 +15,10 @@ const inter = Inter({
   variable: "--font-body",
 });
 
+export const viewport = {
+  themeColor: "#0056b3",
+};
+
 export const metadata: Metadata = { 
   metadataBase: new URL("https://gtscoursenligne.com"), 
   alternates: {

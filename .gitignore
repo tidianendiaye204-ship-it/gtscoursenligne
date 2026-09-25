@@ -1,3 +1,8 @@
 node_modules
 .next
 .env.local
+
+# Serwist PWA
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
