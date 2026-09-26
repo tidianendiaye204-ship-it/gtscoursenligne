@@ -81,3 +81,15 @@ CREATE TABLE IF NOT EXISTS paiements (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(eleve_id, mois)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  role TEXT CHECK (role IN ('admin', 'prof')) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT OR IGNORE INTO users (id, email, password_hash, role) VALUES
+  ('u1', 'gtsadmin1847', '$2b$10$p7XhAKnpxe0dxFpzWX8qeOhOCiydrAHWxZWogz2X9opgHH4CAthqu', 'admin'),
+  ('u2', 'prof@gts.sn', '$2b$10$z9vUqS0fwoQ3iwflAaWOl.iIkARRP9PzmostZwhS.ti73CSeu/8Ym', 'prof');

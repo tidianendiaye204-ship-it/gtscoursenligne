@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
+
 
 // Clés API PayDunya (à configurer dans les variables d'environnement Cloudflare / .dev.vars)
 // PAYDUNYA_MASTER_KEY
