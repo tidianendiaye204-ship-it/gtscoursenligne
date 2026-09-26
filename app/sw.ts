@@ -18,4 +18,11 @@ const serwist = new Serwist({
   runtimeCaching: defaultCache,
 });
 
+(self as any).addEventListener('fetch', (event: any) => {
+  const url = new URL(event.request.url);
+  if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/api/')) {
+    event.stopImmediatePropagation();
+  }
+});
+
 serwist.addEventListeners();
